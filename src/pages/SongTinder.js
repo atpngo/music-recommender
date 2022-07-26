@@ -45,13 +45,35 @@ function SongTinder()
         setLoading(true);
         const songs = '3PeSchiOZRgnnmAFrgDw4v,2HUoHvLUQlh2FO1kaIjkpN,7CQGybO25VSUNwY2hS7n6J,3XOAVwEjXprqsWRH7u93ae,3jIkw3Q7Lgl71fJdFnr1hf';
 
-        spotify.get("recommendations?limit=100&seed_tracks=" + songs, {
+        spotify.get("recommendations?limit=50&seed_tracks=" + songs, {
             headers : {
                 Authorization: "Bearer " + localStorage.getItem("accessToken")
             }
         })
         .then((res) => {
-            // console.log(res.data.tracks);
+            console.log(res.data.tracks);
+            let id = (res.data.tracks.map(track => track.id)).join("%2C");
+            console.log(id);
+            for (const [index, item] of res.data.tracks.entries())
+            {
+                if (!item.preview_url)
+                {
+                    console.log(`${item.name} did not have a preview url (index: ${index})`);
+                }
+            }
+            console.log('----------------------');
+            spotify.get("tracks?market=US&ids=" + id)
+                .then(newres => {
+                    for (const [index, item] of newres.data.tracks.entries())
+                    {
+                        if (!item.preview_url)
+                        {
+                            console.log(`${item.name} did not have a preview url (index: ${index})`);
+                        }
+                    }
+                })
+
+            
             let formattedData = res.data.tracks.map(input => { 
                 return {
                     'title':input.name,
