@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function CreatePlaylist()
 {
     const [done, setDone] = useState(false);
-    const [title, setTitle] = useState(null);
+    const [title, setTitle] = useState("Default Title");
     const [desc, setDesc] = useState("");
     const [id, setId] = useState(null);
 

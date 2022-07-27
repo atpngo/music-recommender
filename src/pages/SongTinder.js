@@ -64,12 +64,24 @@ function SongTinder()
             console.log('----------------------');
             spotify.get("tracks?market=US&ids=" + id)
                 .then(newres => {
+                    let bads = [];
                     for (const [index, item] of newres.data.tracks.entries())
                     {
                         if (!item.preview_url)
                         {
                             console.log(`${item.name} did not have a preview url (index: ${index})`);
+                            bads.push(item.id);
                         }
+                    }
+                    
+                    if (bads.length == 0)
+                    {
+                        console.log("WOOOO");
+                    }
+                    else
+                    {
+                        let id = bads.join("%2C");
+                        console.log(id);
                     }
                 })
 
