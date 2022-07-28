@@ -83,21 +83,22 @@ function SongTinder()
                         let id = bads.join("%2C");
                         console.log(id);
                     }
+                    
+                    let formattedData = res.data.tracks.map(input => { 
+                        return {
+                            'title':input.name,
+                            'artist':(input.artists.map((artist, key) => artist.name)).join(', '),
+                            'player':"https://open.spotify.com/embed/track/" + input.id,
+                            'url':input.preview_url,
+                            'uri':input.uri,
+                        }
+                    });
+                    // console.log(formattedData);
+                    setData(formattedData);
+        
+                    setLoading(false);
+                    
                 })
-
-            
-            let formattedData = res.data.tracks.map(input => { 
-                return {
-                    'title':input.name,
-                    'artist':(input.artists.map((artist, key) => artist.name)).join(', '),
-                    'player':"https://open.spotify.com/embed/track/" + input.id,
-                    'uri':input.uri,
-                }
-            });
-            // console.log(formattedData);
-            setData(formattedData);
-
-            setLoading(false);
              
         })
     }

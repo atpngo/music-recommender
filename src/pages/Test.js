@@ -30,7 +30,8 @@ function Test()
             let title = url.label;
             return new Howl({
                 src: audioUrl,
-                html5: true
+                html5: true,
+                volume: 0.05,
             })
         }));
     }, []);

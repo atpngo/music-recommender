@@ -96,11 +96,13 @@ function Visualize()
             .then(
                 res => {
                     setSongs(res.data.items);
+                    console.log(res.data.items.map(item => item.album.images[1].url));
                     let trackIds = res.data.items.map((item, key) => item.id).join(',');
                     spotify.get('/audio-features?ids=' + trackIds)
                     .then(
                         res => {
                             let audio_features = res.data.audio_features;
+                            // console.log(audio_features);
                             setAudioFeat(audio_features);
                             // handle histograms
                             for (const category of histogramCategories)
