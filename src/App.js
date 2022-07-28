@@ -6,11 +6,13 @@ import Favorite from "./pages/Favorite";
 import SongTinder from "./pages/SongTinder";
 import Test from "./pages/Test";
 import Visualize from "./pages/Visualize";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
     <div className="App">
       <Router>
+        <NavBar/>
         <Routes>
           <Route path="/" element={<Authenticate/>}/>
           <Route path="/choose" element={<Choose/>}/>
