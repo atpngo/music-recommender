@@ -1,0 +1,26 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+p {
+    margin: 0;
+}
+
+#desc {
+    display: flex;
+    justify-content: center;
+}
+
+#song {
+    font-weight: 400;
+    font-size: large;
+    margin-bottom: 2px;
+}
+
+#artists {
+    font-weight: 200;
+}
+
+#number {
+    font-size: larger;
+}

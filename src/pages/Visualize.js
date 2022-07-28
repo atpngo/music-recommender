@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import SongTable from "../components/SongTable";
-import ReactApexChart from "react-apexcharts";
 import Chart from "../components/Chart";
-
+import SongTile from "../components/SongTile";
 
 function Visualize()
 {
@@ -80,7 +78,15 @@ function Visualize()
             spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
             .then(
                 res => {
-                    setSongs(res.data.items);
+                    // console.log(res.data.items);
+                    setSongs(res.data.items.map((item, key) => {
+                        return {
+                            image: item.album.images[1].url,
+                            title: item.name,
+                            artists: item.artists.map((artist, key) => artist.name).join(', '),
+                            index: key+1
+                        }
+                    }));
                     // console.log(res.data.items.map(item => item.album.images[1].url));
                     let trackIds = res.data.items.map((item, key) => item.id).join(',');
                     spotify.get('/audio-features?ids=' + trackIds)
@@ -130,7 +136,7 @@ function Visualize()
     const doThis = () =>
     {
         // console.log(songs);
-        console.log(data);
+        console.log(songs);
     }
 
     const selectTerm = (e) => {
@@ -152,21 +158,16 @@ function Visualize()
     return (
         <div>
             {term} <br/>
-            {songs && <SongTable songs={songs} audioData={audioFeat}/>}
+            <button onClick={doThis}>Debug</button>
 
             <button onClick={selectTerm}>Short Term</button>
             <button onClick={selectTerm}>Medium Term</button>
             <button onClick={selectTerm}>Long Term</button>
-            {/* {song && songs.map()} */}
-            {
-                term &&
-                histogramCategories.map((category, index) => {
-                    return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} />
-                })
-            }
-            {/* <ReactApexChart options={apexOptions} series={apexSeries} type="area" height={350}/> */}
-            <button onClick={doThis}>Click me</button>
-            {/* <Chart bgcolor='#b7d0ea' data={[1,2,3,4,5,6,7]} labels={['A','B','C','D','E','F','G']}/> */}
+
+            {/* Song Tiles */}
+            {songs && songs.map((song, key) => <SongTile song={song}/> )}
+            {/* Charts */} 
+            {term && histogramCategories.map((category, index) => { return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} /> })}
         </div>
     )
 }

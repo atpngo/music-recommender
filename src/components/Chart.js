@@ -11,6 +11,7 @@ function Chart(props)
             zoom: { enabled: false },
             // might need to go back to this and fix this later
             height: 400,
+            fontFamily: 'Montserrat, sans-serif',
             // type: 'area',
         },
         grid: { show: false },
