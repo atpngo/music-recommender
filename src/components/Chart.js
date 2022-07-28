@@ -10,8 +10,9 @@ function Chart(props)
             toolbar: { show: false },
             zoom: { enabled: false },
             // might need to go back to this and fix this later
-            height: 400,
+            height: "10vh",
             fontFamily: 'Montserrat, sans-serif',
+            width: "100px",
             // type: 'area',
         },
         grid: { show: false },
@@ -32,7 +33,11 @@ function Chart(props)
         }
     ]
 
-    return <ReactApexChart options={options} series={series} type="area"/>
+    return (
+        <div sx={{width: "10vw"}}>
+            <ReactApexChart options={options} series={series} type="area"/>
+        </div>
+    );
 }
 
 export default Chart;
