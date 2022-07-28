@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Chart from "../components/Chart";
-import SongTile from "../components/SongTile";
+import SongStack from "../components/SongStack";
 
 function Visualize()
 {
@@ -165,7 +165,7 @@ function Visualize()
             <button onClick={selectTerm}>Long Term</button>
 
             {/* Song Tiles */}
-            {songs && songs.map((song, key) => <SongTile song={song}/> )}
+            <SongStack songs={songs}/>
             {/* Charts */} 
             {term && histogramCategories.map((category, index) => { return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} /> })}
         </div>
