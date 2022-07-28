@@ -9,7 +9,7 @@ function SongStack(props)
 
     return (
         <div>
-            <Paper elevation={10} sx={{marginBottom: "1em", marginTop: "20px", width: "20vw", borderRadius: "20px", maxHeight: "90vh", overflow: 'auto'}}>
+            <Paper elevation={10} sx={{marginBottom: "1em", marginTop: "20px", width: "20vw", borderRadius: "15px", maxHeight: "80vh", overflow: 'auto', backgroundColor: 'rgb(255, 255, 255, 0.5)'}}>
                 <br/>
                 <List>
                     {songs.map((song, key) => {
