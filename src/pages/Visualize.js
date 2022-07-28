@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
-import { Bar } from 'react-chartjs-2';
 import axios from "axios";
 import SongTable from "../components/SongTable";
+import ReactApexChart from "react-apexcharts";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-  );
+
 
 function Visualize()
 {
@@ -96,7 +88,7 @@ function Visualize()
             .then(
                 res => {
                     setSongs(res.data.items);
-                    console.log(res.data.items.map(item => item.album.images[1].url));
+                    // console.log(res.data.items.map(item => item.album.images[1].url));
                     let trackIds = res.data.items.map((item, key) => item.id).join(',');
                     spotify.get('/audio-features?ids=' + trackIds)
                     .then(
@@ -144,7 +136,8 @@ function Visualize()
 
     const doThis = () =>
     {
-        console.log(songs);
+        // console.log(songs);
+        console.log(data);
     }
 
     const selectTerm = (e) => {
@@ -163,6 +156,52 @@ function Visualize()
         }
     }
 
+    // customizing chart
+    // https://apexcharts.com/docs/options/plotoptions/bar/
+    const apexOptions = {
+        colors: ['#EF429F'],
+        chart: {
+            // background: '#d5b1cc', // bot
+            // background: '#c8bfda', // mid
+            background: '#b7d0ea', // top
+            toolbar: {
+                show: false
+            },
+            zoom: {
+                enabled: false
+            },
+            height: 350,
+            type: 'area',
+        },
+        grid: {
+            show: false,
+        },
+        dataLabels: {
+            enabled: true
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            categories:  ['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0'],
+            axisTicks: {
+                show: false
+            },
+            axisBorder: {
+                show: false
+            }
+        },
+        yaxis: {
+            show: false
+        }
+    }
+
+    // this is where the data goes
+    const apexSeries = [{
+        name: 'Songs',
+        data: [0,0,0,1,4,11,15,12,6,1] 
+    }]
+
     return (
         <div>
             {term} <br/>
@@ -171,12 +210,8 @@ function Visualize()
             <button onClick={selectTerm}>Short Term</button>
             <button onClick={selectTerm}>Medium Term</button>
             <button onClick={selectTerm}>Long Term</button>
-            <div style={{}}>
-            {term && histogramCategories.map((category, key) => {
-                return <Bar options={data[category].options} data={data[category].data} />
-            })}
-            </div>
             {/* {song && songs.map()} */}
+            <ReactApexChart options={apexOptions} series={apexSeries} type="area" height={350}/>
             <button onClick={doThis}>Click me</button>
         </div>
     )
