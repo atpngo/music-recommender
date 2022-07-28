@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SongTable from "../components/SongTable";
 import ReactApexChart from "react-apexcharts";
-
+import Chart from "../components/Chart";
 
 
 function Visualize()
@@ -30,7 +30,7 @@ function Visualize()
     });
 
 
-    const constructHistogram = (category, data) => {
+    const constructHistogram = (data) => {
         let formattedData = new Array(10).fill(0);
         for (const val of data)
         {
@@ -68,15 +68,8 @@ function Visualize()
                     break;
             }
         }
-        let histogram = {
-            labels: ['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0'],
-            datasets: [{
-                data: formattedData,
-                label: 'Songs',
-                backgroundColor: 'rgba(30, 215, 96, 0.5)',
-            }]
-        }
-        return histogram;
+
+        return formattedData;
     }
 
 
@@ -111,7 +104,7 @@ function Visualize()
                                             },
                                         }
                                     };
-                                    tmp[category].data = constructHistogram(category, audio_features.map((val, key) => val[category]));
+                                    tmp[category] = constructHistogram(audio_features.map((val, key) => val[category]));
 
                                     return tmp;
                                 })
@@ -156,52 +149,6 @@ function Visualize()
         }
     }
 
-    // customizing chart
-    // https://apexcharts.com/docs/options/plotoptions/bar/
-    const apexOptions = {
-        colors: ['#EF429F'],
-        chart: {
-            // background: '#d5b1cc', // bot
-            // background: '#c8bfda', // mid
-            background: '#b7d0ea', // top
-            toolbar: {
-                show: false
-            },
-            zoom: {
-                enabled: false
-            },
-            height: 350,
-            type: 'area',
-        },
-        grid: {
-            show: false,
-        },
-        dataLabels: {
-            enabled: true
-        },
-        stroke: {
-            curve: 'smooth'
-        },
-        xaxis: {
-            categories:  ['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0'],
-            axisTicks: {
-                show: false
-            },
-            axisBorder: {
-                show: false
-            }
-        },
-        yaxis: {
-            show: false
-        }
-    }
-
-    // this is where the data goes
-    const apexSeries = [{
-        name: 'Songs',
-        data: [0,0,0,1,4,11,15,12,6,1] 
-    }]
-
     return (
         <div>
             {term} <br/>
@@ -211,8 +158,15 @@ function Visualize()
             <button onClick={selectTerm}>Medium Term</button>
             <button onClick={selectTerm}>Long Term</button>
             {/* {song && songs.map()} */}
-            <ReactApexChart options={apexOptions} series={apexSeries} type="area" height={350}/>
+            {
+                term &&
+                histogramCategories.map((category, index) => {
+                    return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} />
+                })
+            }
+            {/* <ReactApexChart options={apexOptions} series={apexSeries} type="area" height={350}/> */}
             <button onClick={doThis}>Click me</button>
+            {/* <Chart bgcolor='#b7d0ea' data={[1,2,3,4,5,6,7]} labels={['A','B','C','D','E','F','G']}/> */}
         </div>
     )
 }
