@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Howl } from "howler";
 import React, { useEffect, useState } from "react";
+import Chart from "../components/Chart";
 
 function Test()
 {
@@ -60,6 +61,7 @@ function Test()
             <button onClick={playSong}>1</button>
             <button onClick={playSong}>2</button>
             <button onClick={playSong}>3</button>
+            <Chart data={[1,2,5,2,1]} labels={['AAAA','BBBB','CCCC','DDDD','EEEE']} />
         </div>
 
     )

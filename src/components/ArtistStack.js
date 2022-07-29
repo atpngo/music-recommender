@@ -1,22 +1,21 @@
 import React from "react";
-import SongTile from "./SongTile";
 import { List, Paper } from "@mui/material";
-import '../style/SongStack.css';
 
-function SongStack(props)
-{
-    const songs = props.songs;
+
+function ArtistStack(props)
+{   
+    const artists = props.artists;
 
     return (
         <div style={{marginTop: "20px"}}>
             <p style={{marginLeft: "1.1em", marginBottom: "0.3em", color: 'white', fontSize: '1.1em'}}>
-                <strong>Top 50 Tracks</strong>
+                <strong>Top 50 Artists</strong>
             </p>
             <Paper elevation={10} sx={{marginLeft: "1em", marginBottom: "1em", width: "20vw", borderRadius: "15px", maxHeight: "80vh", overflow: 'auto', backgroundColor: 'rgb(255, 255, 255, 0.5)'}}>
                 <br/>
                 <List>
-                    {songs.map((song, key) => {
-                        return <div><SongTile song={song}/> <br/></div>
+                    {artists.map((artist, key) => {
+                        return <div><SongTile artist={artist}/></div>
                     })}
                 </List>
             </Paper>
@@ -24,7 +23,7 @@ function SongStack(props)
     );
 }
 
-export default SongStack;
+export default ArtistStack;
 
-// props:
-// songs -> list of objects containing title, artists, image, index
+// props
+// artists -> name, image, follower count, index 

@@ -4,6 +4,8 @@ import Chart from "../components/Chart";
 import SongStack from "../components/SongStack";
 
 import {constructHistogram} from '../util/Functions';
+import PaperChart from "../components/PaperChart";
+import { Stack } from "@mui/material";
 
 function Visualize()
 {
@@ -19,6 +21,7 @@ function Visualize()
     const [loading, setLoading] = useState(true);
     const [term, setTerm] = useState('short_term');
     const [songs, setSongs] = useState(null);
+    const [artists, setArtists] = useState(null);
     const [audioFeat, setAudioFeat] = useState(null);
 
     const spotify = axios.create({
@@ -74,8 +77,23 @@ function Visualize()
                                     return tmp;
                                 })
                             }
-    
-                            setLoading(false);
+                            // get artists
+                            spotify.get('me/top/artists?time_range='+term+'&limit=50')
+                            .then(res => 
+                                {
+                                    setArtists(res.data.items.map((artist, key) => {
+                                        return {
+                                            image: artist.images[1].url,
+                                            title: artist.name,
+                                            artists: artist.followers.total + ' Followers',
+                                            index: key+1
+                                        }
+                                    }));
+                                    
+                                    setLoading(false);
+
+                                }
+                            )
                         }
                     )
                 }
@@ -124,9 +142,17 @@ function Visualize()
             <button onClick={selectTerm}>Long Term</button>
 
             {/* Song Tiles */}
-            <SongStack songs={songs}/>
-            {/* Charts */} 
-            {term && histogramCategories.map((category, index) => { return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} /> })}
+            <Stack direction="row">
+                <SongStack songs={songs}/>
+                <SongStack songs={artists}/>
+                {/* Charts */} 
+                {/* {term && histogramCategories.map((category, index) => { return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} /> })} */}
+                 <Stack direction="column">
+                    {histogramCategories.map((category, key) => {
+                        return <PaperChart data={data[category]} title={category.charAt(0).toUpperCase() + category.slice(1)} />
+                    })}
+                 </Stack>
+            </Stack>
         </div>
     )
 }
