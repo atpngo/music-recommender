@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Chart from "../components/Chart";
-import SongStack from "../components/SongStack";
+import TileStack from "../components/TileStack";
 
 import {constructHistogram} from '../util/Functions';
 import PaperChart from "../components/PaperChart";
@@ -124,17 +124,15 @@ function Visualize()
 
     return (
         <div>
-            {term} <br/>
             <button onClick={doThis}>Debug</button>
-
             <button onClick={selectTerm}>Short Term</button>
             <button onClick={selectTerm}>Medium Term</button>
             <button onClick={selectTerm}>Long Term</button>
 
             {/* Song Tiles */}
             <Stack direction="row">
-                <SongStack songs={songs}/>
-                <SongStack songs={artists}/>
+                <TileStack title="Top 50 Songs" type="songs" data={songs}/>
+                <TileStack title="Top 50 Artists" type="artists" data={artists}/>
                 {/* Charts */} 
                 {/* {term && histogramCategories.map((category, index) => { return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} /> })} */}
                  <Stack direction="column">

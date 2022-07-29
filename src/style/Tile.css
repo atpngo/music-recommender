@@ -23,4 +23,16 @@ p {
 
 #number {
     font-size: larger;
+    font-weight: bold;
+}
+
+#artist {
+    font-weight: 400;
+    font-size: large;
+    margin-bottom: 2px;
+}
+
+#followers {
+    font-weight: 200;
+    font-size: smaller;
 }
