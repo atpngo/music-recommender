@@ -22,7 +22,6 @@ function Visualize()
     const [term, setTerm] = useState('short_term');
     const [songs, setSongs] = useState(null);
     const [artists, setArtists] = useState(null);
-    const [audioFeat, setAudioFeat] = useState(null);
 
     const spotify = axios.create({
         baseURL: 'https://api.spotify.com/v1/',
@@ -37,57 +36,64 @@ function Visualize()
         // fetch data and then visualize 
         if (term)
         {
-            spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
-            .then(
-                res => {
-                    // console.log(res.data.items);
-                    setSongs(res.data.items.map((item, key) => {
-                        return {
-                            image: item.album.images[1].url,
-                            title: item.name,
-                            artists: item.artists.map((artist, key) => artist.name).join(', '),
-                            index: key+1
-                        }
-                    }));
-                    // console.log(res.data.items.map(item => item.album.images[1].url));
-                    let trackIds = res.data.items.map((item, key) => item.id).join(',');
-                    spotify.get('/audio-features?ids=' + trackIds)
-                    .then(
-                        res => {
-                            let audio_features = res.data.audio_features;
-                            // console.log(audio_features);
-                            setAudioFeat(audio_features);
-                            // handle histograms
-                            for (const category of histogramCategories)
-                            {
-                                setData(prevState => {
-                                    let tmp = Object.assign({}, prevState);
-                                    tmp[category] = constructHistogram(audio_features.map((val, key) => val[category]));
-
-                                    return tmp;
-                                })
+            // get id
+            spotify.get('me').then(res => {
+                localStorage.setItem("userID", res.data.id);
+                localStorage.setItem("userImage", res.data.images[0].url);
+                localStorage.setItem("userName", res.data.display_name);
+            
+            
+                spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
+                .then(
+                    res => {
+                        // console.log(res.data.items);
+                        setSongs(res.data.items.map((item, key) => {
+                            return {
+                                image: item.album.images[1].url,
+                                title: item.name,
+                                artists: item.artists.map((artist, key) => artist.name).join(', '),
+                                index: key+1
                             }
-                            // get artists
-                            spotify.get('me/top/artists?time_range='+term+'&limit=50')
-                            .then(res => 
+                        }));
+                        // console.log(res.data.items.map(item => item.album.images[1].url));
+                        let trackIds = res.data.items.map((item, key) => item.id).join(',');
+                        spotify.get('/audio-features?ids=' + trackIds)
+                        .then(
+                            res => {
+                                let audio_features = res.data.audio_features;
+                                // console.log(audio_features);
+                                // handle histograms
+                                for (const category of histogramCategories)
                                 {
-                                    setArtists(res.data.items.map((artist, key) => {
-                                        return {
-                                            image: artist.images[1].url,
-                                            title: artist.name,
-                                            artists: artist.followers.total + ' Followers',
-                                            index: key+1
-                                        }
-                                    }));
-                                    
-                                    setLoading(false);
+                                    setData(prevState => {
+                                        let tmp = Object.assign({}, prevState);
+                                        tmp[category] = constructHistogram(audio_features.map((val, key) => val[category]));
 
+                                        return tmp;
+                                    })
                                 }
-                            )
-                        }
-                    )
-                }
-            );
+                                // get artists
+                                spotify.get('me/top/artists?time_range='+term+'&limit=50')
+                                .then(res => 
+                                    {
+                                        setArtists(res.data.items.map((artist, key) => {
+                                            return {
+                                                image: artist.images[1].url,
+                                                title: artist.name,
+                                                artists: artist.followers.total + ' Followers',
+                                                index: key+1
+                                            }
+                                        }));
+                                        
+                                        setLoading(false);
+
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
+            });
         }
         else
         {

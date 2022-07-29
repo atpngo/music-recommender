@@ -20,7 +20,7 @@ function CreatePlaylist()
     })
 
     useEffect(() => {
-        spotify.get("me").then(res => setId(res.data.id));
+        spotify.get("me").then(res => {console.log(res.data); setId(res.data.id)});
     }, [])
 
     const validate = () =>
