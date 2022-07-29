@@ -62,16 +62,6 @@ function Visualize()
                             {
                                 setData(prevState => {
                                     let tmp = Object.assign({}, prevState);
-                                    tmp[category] = {};
-                                    tmp[category].options = {
-                                        responsive: true,
-                                        plugins: {
-                                            title: {
-                                                display: true,
-                                                text: [category.charAt(0).toUpperCase() + category.substring(1), descriptions[category]]
-                                            },
-                                        }
-                                    };
                                     tmp[category] = constructHistogram(audio_features.map((val, key) => val[category]));
 
                                     return tmp;

@@ -6,9 +6,6 @@ function Chart(props)
     const options = {
         colors: ['#EF429F'],
         chart: {
-            background: "rgb(255,255,255, 0)",
-            // background: props.bg,
-            // background: 'green',
             toolbar: { show: false },
             zoom: { enabled: false },
             // might need to go back to this and fix this later
