@@ -2,6 +2,7 @@ import axios from "axios";
 import { Howl } from "howler";
 import React, { useEffect, useState } from "react";
 import Chart from "../components/Chart";
+import Profile from "../components/Profile";
 
 function Test()
 {
@@ -57,11 +58,12 @@ function Test()
 
     return(
         <div>
-            <button onClick={doThing}>Click me </button>
+            {/* <button onClick={doThing}>Click me </button>
             <button onClick={playSong}>1</button>
             <button onClick={playSong}>2</button>
             <button onClick={playSong}>3</button>
-            <Chart data={[1,2,5,2,1]} labels={['AAAA','BBBB','CCCC','DDDD','EEEE']} />
+            <Chart data={[1,2,5,2,1]} labels={['AAAA','BBBB','CCCC','DDDD','EEEE']} /> */}
+            <Profile/>
         </div>
 
     )

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Chart from "../components/Chart";
 import TileStack from "../components/TileStack";
-
+import Profile from "../components/Profile";
 import {constructHistogram} from '../util/Functions';
 import PaperChart from "../components/PaperChart";
-import { Stack } from "@mui/material";
+import { Stack, Button } from "@mui/material";
+import { styled } from '@mui/material/styles';
 
 function Visualize()
 {
@@ -113,35 +113,64 @@ function Visualize()
     }
 
     const selectTerm = (e) => {
-        let choice = e.target.innerText;
+        let choice = e.target.id;
         switch (choice)
         {
-            case 'Short Term':
+            case 'short':
                 setTerm('short_term');
                 break;
-            case 'Medium Term':
+            case 'medium':
                 setTerm('medium_term');
                 break;
-            case 'Long Term':
+            case 'long':
                 setTerm('long_term');
                 break;
         }
     }
 
+    const CustomButton = styled(Button)(({theme}) => ({
+        color: 'white',
+        backgroundColor: '#EF429F',
+        fontFamily: 'Montserrat, sans-serif',
+        textTransform: 'none',
+        fontSize: 'large',
+        '&:hover': {
+            backgroundColor: '#d9388f',
+        },
+        width: '80%',
+        
+    }))
+
     return (
         <div>
-            <button onClick={doThis}>Debug</button>
-            <button onClick={selectTerm}>Short Term</button>
-            <button onClick={selectTerm}>Medium Term</button>
-            <button onClick={selectTerm}>Long Term</button>
+            {/* <button onClick={doThis}>Debug</button> */}
+            
 
             {/* Song Tiles */}
             <Stack direction="row">
+                <Stack direction="column" sx={{marginLeft: "2em", marginRight: "2em", marginTop: "1em", display: "flex", alignContent: "center", justifyContent: "center"}}>
+                    <Profile/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                        <CustomButton onClick={selectTerm} id="short" variant="contained">Past Month</CustomButton>
+                        <br/>
+                        <CustomButton onClick={selectTerm} id="medium" variant="contained">Past 6 Months</CustomButton>
+                        <br/>
+                        <CustomButton onClick={selectTerm} id="long" variant="contained">All Time</CustomButton>
+                        <br/>
+
+                    </div>
+                </Stack>
                 <TileStack title="Top 50 Songs" type="songs" data={songs}/>
                 <TileStack title="Top 50 Artists" type="artists" data={artists}/>
                 {/* Charts */} 
                 {/* {term && histogramCategories.map((category, index) => { return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} /> })} */}
                  <Stack direction="column">
+                    <br/>
                     {histogramCategories.map((category, key) => {
                         return <PaperChart data={data[category]} title={category.charAt(0).toUpperCase() + category.slice(1)} />
                     })}
