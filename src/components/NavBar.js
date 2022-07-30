@@ -17,6 +17,8 @@ function NavBar()
   const goToTrends = () =>
   {
     navigate('/trends');
+    window.location.reload();
+
   }
 
   const goToSongs = () =>
