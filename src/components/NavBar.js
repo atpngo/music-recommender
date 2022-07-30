@@ -5,12 +5,24 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
-
+import { useNavigate } from "react-router-dom";
 
 const pages = ['trends', 'songs'];
 
 function NavBar()
 {
+  const navigate = useNavigate();
+
+
+  const goToTrends = () =>
+  {
+    navigate('/trends');
+  }
+
+  const goToSongs = () =>
+  {
+    navigate('/trends');
+  }
 
   return (
     <AppBar position="static" sx={{backgroundColor: '#EF429F', height: '3.25em', display: 'flex', justifyContent: 'center'}}>
@@ -19,15 +31,17 @@ function NavBar()
 
           
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            App Name Here
+            Spoti-Match
           </Box>
-                
-                {/* right side */}
-          {pages.map((page) => (
-                <MenuItem key={page}>
-                  <Typography textAlign="center" sx={{fontFamily: 'Montserrat', fontSize: '1.25em'}}>{page}</Typography>
-                </MenuItem>
-              ))}
+          
+          <MenuItem>
+            <Typography onClick={goToTrends} textAlign="center" sx={{fontFamily: 'Montserrat', fontSize: '1.25em'}}>trends</Typography>
+          </MenuItem>
+          <MenuItem>
+          <Typography onClick={goToSongs} textAlign="center" sx={{fontFamily: 'Montserrat', fontSize: '1.25em'}}>songs</Typography>
+          </MenuItem>
+
+        
         </Toolbar>
       </Container>
     </AppBar>
