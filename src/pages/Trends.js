@@ -47,7 +47,6 @@ function Trends()
                 spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
                 .then(
                     res => {
-                        console.log(res.data.items[0].album.images[1].url);
                         // console.log(res.data.items);
                         setSongs(res.data.items.map((item, key) => {
                             return {
