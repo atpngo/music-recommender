@@ -6,6 +6,7 @@ import {constructHistogram} from '../util/Functions';
 import PaperChart from "../components/PaperChart";
 import { Stack, Button } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import Loading from "../components/Loading";
 
 function Trends()
 {
@@ -104,7 +105,7 @@ function Trends()
 
     if (loading)
     {
-        return <div>Loading...</div>
+        return <Loading/>
     }
 
     const doThis = () =>
