@@ -8,7 +8,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Howl } from 'howler';
 import CurrentSong from '../components/CurrentSong';
-import { gridColumnsTotalWidthSelector } from "@mui/x-data-grid";
 
 
 const ButtonStyle = styled(IconButton)(({theme}) => ({
@@ -43,9 +42,7 @@ function SongTinder()
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [index, setIndex] = useState(0);
-    const [songs, setSongs] = useState([]);
     const [howlers, setHowlers] = useState([]);
-
 
     const navigate = useNavigate();
 
@@ -149,6 +146,8 @@ function SongTinder()
                         })
                     });
                     setHowlers(songSources);
+                    // play song?
+                    songSources[0].play();
                     setLoading(false);
                     
                 })
@@ -183,6 +182,9 @@ function SongTinder()
     const goNext = () =>
     {
         setIndex(index+1);
+        // stop current playing song and play the next one
+        howlers[index].stop();
+        howlers[index+1].play();
         console.log(index);
         if (index+1 == data.length)
         {
