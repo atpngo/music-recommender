@@ -19,7 +19,7 @@ function NavBar()
 
           
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            Made by Andy Ngo
+            App Name Here
           </Box>
                 
                 {/* right side */}

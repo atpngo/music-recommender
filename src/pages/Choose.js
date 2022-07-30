@@ -11,7 +11,7 @@ function Choose()
 
     const goToData = () =>
     {
-        navigate('/data');
+        navigate('/trends');
     }
     
     return (

@@ -32,7 +32,7 @@ function Authenticate()
             localStorage.setItem("expiresIn", expiresIn);
             localStorage.setItem("tokenType", tokenType);
             window.location.hash = "";
-            navigate('/choose');
+            navigate('/trends');
         }
     }, []);
 

@@ -7,7 +7,7 @@ import PaperChart from "../components/PaperChart";
 import { Stack, Button } from "@mui/material";
 import { styled } from '@mui/material/styles';
 
-function Visualize()
+function Trends()
 {
     const histogramCategories = ['danceability', 'energy', 'valence'];
     const descriptions = {
@@ -46,6 +46,7 @@ function Visualize()
                 spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
                 .then(
                     res => {
+                        console.log(res.data.items[0].album.images[1].url);
                         // console.log(res.data.items);
                         setSongs(res.data.items.map((item, key) => {
                             return {
@@ -180,4 +181,4 @@ function Visualize()
     )
 }
 
-export default Visualize;
+export default Trends;

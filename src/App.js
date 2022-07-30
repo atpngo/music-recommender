@@ -5,8 +5,9 @@ import CreatePlaylist from "./pages/CreatePlaylist";
 import Favorite from "./pages/Favorite";
 import SongTinder from "./pages/SongTinder";
 import Test from "./pages/Test";
-import Visualize from "./pages/Visualize";
+import Trends from "./pages/Trends";
 import NavBar from "./components/NavBar";
+import Error from "./pages/Error";
 
 function App() {
   return (
@@ -17,9 +18,10 @@ function App() {
           <Route path="/" element={<Authenticate/>}/>
           <Route path="/choose" element={<Choose/>}/>
           <Route path="/create_playlist" element={<CreatePlaylist/>}/>
-          <Route path="/song_tinder" element={<SongTinder/>}/>
+          <Route path="/songs" element={<SongTinder/>}/>
           <Route path="/test" element={<Test/>}/>
-          <Route path="/data" element={<Visualize/>}/>
+          <Route path="/trends" element={<Trends/>}/>
+          <Route path="*" element={<Error/>}/>
         </Routes>
       </Router>
     </div>

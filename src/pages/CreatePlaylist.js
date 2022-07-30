@@ -55,7 +55,7 @@ function CreatePlaylist()
         })
         .then(res => {
             localStorage.setItem("playlistId", res.data.id);
-            navigate('/song_tinder');
+            navigate('/songs');
         });
 
     }
