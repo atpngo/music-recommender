@@ -21,7 +21,7 @@ function NavBar()
 
   const goToSongs = () =>
   {
-    navigate('/trends');
+    navigate('/songs');
   }
 
   return (
