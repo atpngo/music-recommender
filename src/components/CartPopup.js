@@ -56,7 +56,8 @@ function CartPopup()
     });
 
     useEffect(() => {
-        // calculate how many playlists they got
+        
+        // setSelection(null);
         setLoading(true);
         spotify.get('me/playlists')
         .then((res) => {
@@ -91,12 +92,22 @@ function CartPopup()
     const processQuery = (e) =>
     {
         // use playlist id and make an axios call to add songs in cart 
+        // get saved songs from localStorage
+        let uris = JSON.parse(localStorage.getItem("savedSongs")).map(song => {
+            return song.uri
+        });
+        console.log(uris);
+        spotify.post('playlists/' + selection + '/tracks', uris)
+        .then(res => {
+            console.log(res);
+        })
         // clean up and reset cart
     }
 
     const handleInputChange = (e, newVal) => 
     {
-        setSelection(newVal);
+        console.log(selection);
+        setSelection(newVal.id);
         console.log(newVal);
     }
 
@@ -132,7 +143,7 @@ function CartPopup()
                             renderInput={(params) => <CustomTextField {...params} variant="outlined" placeholder="Select a playlist" 
                             sx={{input: {color: 'rgb(255, 255, 255, 0.9)', fontFamily: 'Montserrat, sans-serif'}}}
                             />}  sx={{width: '50vw', backgroundColor: 'rgb(255,255,255,0.2)', borderRadius: '20px', outline: 'none'}} />
-                            <CustomButton onClick={processQuery} sx={{height: '95%', marginLeft: '1vw'}}>CONFIRM</CustomButton>
+                            <CustomButton disabled={selection === null} onClick={processQuery} sx={{height: '95%', marginLeft: '1vw'}}>CONFIRM</CustomButton>
                         </Stack>
                     </Stack>
                     

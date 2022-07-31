@@ -61,13 +61,13 @@ function SongTinder()
 
 
     useEffect(() => {
-        if (!localStorage.getItem("playlistId"))
-        {
-            navigate("/create_playlist");
-        }
-        else if (localStorage.getItem("accessToken"))
+        if (localStorage.getItem("accessToken"))
         {
             getSongs();
+        }
+        else
+        {
+            navigate("/");
         }
         console.log("fetching songs...");
     }, []);
