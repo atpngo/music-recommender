@@ -134,7 +134,6 @@ function CartPopup(props)
         let uris = JSON.parse(localStorage.getItem("savedSongs")).map(song => {
             return song.uri
         });
-        console.log(uris);
         spotify.post('playlists/' + selection.id + '/tracks', uris)
         .then(res => {
             console.log(res);

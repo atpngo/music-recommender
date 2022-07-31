@@ -1,8 +1,6 @@
 import axios from "axios";
-import { Howl } from "howler";
 import React, { useEffect, useState } from "react";
-import CartPopup from "../components/CartPopup";
-import CurrentSong from "../components/CurrentSong";
+import Loading from "../components/Loading";
 
 
 
@@ -18,27 +16,9 @@ function Test()
         }
     });
 
-    const [open, setOpen] = useState(false);
-
-    useEffect(() =>
-    {
-
-    }, []);
-
-
-    const debug = () =>
-    {
-        setOpen(true);
-    }
-
-    const handleClose = () =>
-    {
-        setOpen(false);
-    }
     return(
         <div>
-            <button onClick={debug}>Debug</button>
-            <CartPopup open={open} onClose={handleClose}/>
+            <Loading/>
         </div>
 
     )

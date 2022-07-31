@@ -10,6 +10,7 @@ import { Howl } from 'howler';
 import CurrentSong from '../components/CurrentSong';
 import Slide from '@mui/material/Slide';
 import CartPopup from "../components/CartPopup";
+import Loading from "../components/Loading";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -209,7 +210,7 @@ function SongTinder()
 
     if (loading)
     {
-        return <div>Loading...</div>;
+        return <Loading/>;
     }
 
     const openCart = () =>
