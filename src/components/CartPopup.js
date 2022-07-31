@@ -53,7 +53,7 @@ function CartPopup(props)
     const [selectable, setSelectable] = useState(false);
     const [openNewPlaylist, setOpenNewPlaylist] = useState(false);
     const [newPlaylistName, setNewPlaylistName] = useState(null);
-    const [albumCovers, setAlbumCovers] = useState([]);
+    // const [albumCovers, setAlbumCovers] = useState([]);
     const color = '#FFFFFF';
 
     const spotify = axios.create({
@@ -68,7 +68,7 @@ function CartPopup(props)
         
         // setSelection(null);
         setLoading(true);
-        setAlbumCovers(JSON.parse(localStorage.getItem("savedSongs")))
+        // setAlbumCovers(JSON.parse(localStorage.getItem("savedSongs")))
         spotify.get('me/playlists')
         .then((res) => {
             let numPlaylists = res.data.total;
@@ -103,9 +103,9 @@ function CartPopup(props)
     }, []);
 
     // A VERY BAD SOLUTION THAT WORKS BUT IS VERY BAD AND INEFFICIENT
-    useEffect(() => {
-        // setAlbumCovers(JSON.parse(localStorage.getItem("savedSongs")));
-    });
+    // useEffect(() => {
+    //     setAlbumCovers(JSON.parse(localStorage.getItem("savedSongs")));
+    // });
 
     // close new playlist dialog
     const handleNewPlaylistClose = () =>
@@ -140,7 +140,7 @@ function CartPopup(props)
             console.log(res);
             // remove playlists from localStorage
             localStorage.setItem("savedSongs", JSON.stringify([]));
-            setAlbumCovers([]);
+            // setAlbumCovers([]);
             // close dialog?
             props.onClose();
         })
@@ -157,7 +157,9 @@ function CartPopup(props)
         {
             setSelectable(true);
         }
+        // selection = newVal;
         setSelection(newVal);
+        console.log(selection);
         console.log(newVal);
     }
 
@@ -209,7 +211,7 @@ function CartPopup(props)
                         {/* contains songs */}
                         <Paper elevation={10} sx={{backgroundColor: 'rgb(255,255,255,0.25)', height: '90%', width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden', alignContent: 'flex-start', padding: '30px', paddingLeft: '0px', paddingRight: '0px', borderRadius: '20px'}}>
                         <Paper elevation={0} sx={{backgroundColor: 'rgb(255,255,255,0)', height: '90%', width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflow: 'auto', alignContent: 'flex-start', justifyContent: 'center', padding: '30px', borderRadius: '20px'}}>
-                            {albumCovers.map((song) => {
+                            {props.songs.map((song) => {
                                 // return 
                                 // need to make something that looks like this:
                                 // <Avatar> <RemoveBtn/> </Avatar>

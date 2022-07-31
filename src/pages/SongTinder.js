@@ -155,7 +155,9 @@ function SongTinder()
                     });
                     setHowlers(songSources);
                     // play song?
+                    console.log('starting song...');
                     songSources[0].play();
+                    console.log('played song...');
                     setLoading(false);
                     
                 })
@@ -193,7 +195,7 @@ function SongTinder()
         // stop current playing song and play the next one
         howlers[index].stop();
         howlers[index+1].play();
-        console.log(index);
+        // console.log(index);
         if (index+1 == data.length)
         {
             getSongs();
