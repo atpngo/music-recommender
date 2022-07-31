@@ -1,6 +1,5 @@
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Authenticate from "./pages/Authenticate";
-import CreatePlaylist from "./pages/CreatePlaylist";
 import SongTinder from "./pages/SongTinder";
 import Test from "./pages/Test";
 import Trends from "./pages/Trends";
@@ -24,7 +23,6 @@ function App() {
         <NavBar/>
         <Routes>
           <Route path="/" element={<Authenticate/>}/>
-          <Route path="/create_playlist" element={<CreatePlaylist/>}/>
           <Route path="/songs" element={<PrivateRoute/>}>
             <Route path="/songs" element={<SongTinder/>}/>
           </Route>
