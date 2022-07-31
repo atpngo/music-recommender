@@ -18,56 +18,27 @@ function Test()
         }
     });
 
-    const [current, setCurrent] = useState(null);
-
-    const [songs, setSongs] = useState(null);
-
-    const urls = [
-        {sound: "https://p.scdn.co/mp3-preview/ff4227b0db468a2ee6c07a8fac221b74f8cd2c20?cid=5500266ebaca49e8a3bc68c6ca66bc49", label: "Song 1"},
-        {sound: "https://p.scdn.co/mp3-preview/a3eab0f06a8fa358487516e51b72934148081199?cid=5500266ebaca49e8a3bc68c6ca66bc49", label: "Song 2"},
-        {sound: "https://p.scdn.co/mp3-preview/87681529f90c880abf5ead07c1d253c2769ddbc4?cid=5500266ebaca49e8a3bc68c6ca66bc49", label: "Song 3"},
-    ]
+    const [open, setOpen] = useState(false);
 
     useEffect(() =>
     {
-        setSongs(urls.map(url => {
-            let audioUrl = url.sound;
-            let title = url.label;
-            return new Howl({
-                src: audioUrl,
-                html5: true,
-                volume: 0.05,
-            })
-        }));
+
     }, []);
 
-    const doThing = () =>
+
+    const debug = () =>
     {
-        console.log(songs);
+        setOpen(true);
     }
 
-    const playSong = (e) =>
+    const handleClose = () =>
     {
-        if (current)
-        {
-            current.stop();
-        }
-        let index = parseInt(e.target.innerText)-1;
-        setCurrent(songs[index]);
-        songs[index].play();
-
+        setOpen(false);
     }
-
-    const obj = {
-        image: 'https://i.scdn.co/image/ab67616d00001e024f62175e66f71baafaade4b1',
-        title: 'Her Song',
-        artist: 'Kaylee Federmann',
-    }
-
-    
     return(
         <div>
-            <CartPopup/>
+            <button onClick={debug}>Debug</button>
+            <CartPopup open={open} onClose={handleClose}/>
         </div>
 
     )

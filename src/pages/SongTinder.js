@@ -9,6 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Howl } from 'howler';
 import CurrentSong from '../components/CurrentSong';
 import Slide from '@mui/material/Slide';
+import CartPopup from "../components/CartPopup";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -48,6 +49,8 @@ function SongTinder()
     const [loading, setLoading] = useState(true);
     const [index, setIndex] = useState(0);
     const [howlers, setHowlers] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [songs, setSongs] = useState([]);
 
     const navigate = useNavigate();
 
@@ -165,17 +168,17 @@ function SongTinder()
         let tmpStorage = JSON.parse(localStorage.getItem("savedSongs"));
         tmpStorage.push(data[index]);
         localStorage.setItem("savedSongs", JSON.stringify(tmpStorage));
-        setLoading(true);
-        spotify.post('playlists/' + localStorage.getItem("playlistId") + '/tracks', 
-            {
-                uris:[data[index].uri]
-            }
-        )
-        .then(res => {
-            console.log(res);
-            setLoading(false);
-        })
-
+        // setLoading(true);
+        // spotify.post('playlists/' + localStorage.getItem("playlistId") + '/tracks', 
+        //     {
+        //         uris:[data[index].uri]
+        //     }
+        // )
+        // .then(res => {
+        //     console.log(res);
+        //     setLoading(false);
+        // })
+        setSongs(tmpStorage);
         goNext();
     }
 
@@ -193,7 +196,6 @@ function SongTinder()
         console.log(index);
         if (index+1 == data.length)
         {
-            // TODO: add code here to fetch more songs
             getSongs();
         }
     }
@@ -208,6 +210,16 @@ function SongTinder()
         return <div>Loading...</div>;
     }
 
+    const openCart = () =>
+    {
+        setOpen(true);
+    }
+
+    const handleClose = () =>
+    {
+        setOpen(false);
+    }
+
     return(
         // check if playlist id is in localstorage
         <div style={{height: '92vh', display: 'flex', alignItems:'center', justifyContent: 'center'}}>
@@ -215,7 +227,9 @@ function SongTinder()
             {/* <button onClick={likeCurrentSong}>Like It</button> */}
             {/* <button onClick={dislikeCurrentSong}>Not a Fan</button> */}
             {/* <button onClick={debug}>Debug</button> */}
-            <CartButton component={Paper} elevation={5} sx={{height: '100px', width: '100px', position: 'absolute', top: '80%', right: '3%', color: 'white'}}>
+            <CartPopup open={open} onClose={handleClose} songs={songs}/>
+
+            <CartButton onClick={openCart} component={Paper} elevation={5} sx={{height: '100px', width: '100px', position: 'absolute', top: '80%', right: '3%', color: 'white'}}>
                 {JSON.parse(localStorage.getItem("savedSongs")).length}
             </CartButton>
             <CurrentSong song={data[index]}>
@@ -234,7 +248,6 @@ function SongTinder()
             </CurrentSong>
 
 
-            
         </div>
     ); 
 }
