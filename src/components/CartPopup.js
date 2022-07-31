@@ -44,7 +44,13 @@ function CartPopup(props)
     const [loading, setLoading] = useState(true);
     const [playlists, setPlaylists] = useState([]);
     // used to open the dialogue for new playlist
-    const [selection, setSelection] = useState(null);
+    // const [selection, setSelection] = useState(null);
+    let selection = null;
+    const setSelection = (arg) =>
+    {
+        selection = arg;
+    }
+    const [selectable, setSelectable] = useState(false);
     const [openNewPlaylist, setOpenNewPlaylist] = useState(false);
     const [newPlaylistName, setNewPlaylistName] = useState(null);
     const [albumCovers, setAlbumCovers] = useState([]);
@@ -143,7 +149,14 @@ function CartPopup(props)
 
     const handleInputChange = (e, newVal) => 
     {
-        console.log(selection);
+        if (!newVal.selectable)
+        {
+            setSelectable(false);
+        }
+        else
+        {
+            setSelectable(true);
+        }
         setSelection(newVal);
         console.log(newVal);
     }
@@ -216,7 +229,7 @@ function CartPopup(props)
                             <CustomTextField {...params} variant="outlined" placeholder="Select a playlist" 
                             sx={{input: {color: 'rgb(255, 255, 255, 0.9)', fontFamily: 'Montserrat, sans-serif'}}}
                             />}  sx={{width: '50vw', backgroundColor: 'rgb(255,255,255,0.2)', borderRadius: '20px', outline: 'none'}} />
-                            <CustomButton disabled={selection === null || !selection.selectable} onClick={processQuery} sx={{height: '95%', marginLeft: '1vw'}}>CONFIRM</CustomButton>
+                            <CustomButton disabled={!selectable} onClick={processQuery} sx={{height: '95%', marginLeft: '1vw'}}>CONFIRM</CustomButton>
                         </Stack>
                     </Stack>
                     
