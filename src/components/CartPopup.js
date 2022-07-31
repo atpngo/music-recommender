@@ -1,21 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import {Dialog, Stack, Paper, Autocomplete, TextField, Button} from '@mui/material';
 import AlbumCover from "../components/AlbumCover";
 import Slide from '@mui/material/Slide';
+import {styled} from '@mui/material/styles';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
+const CustomTextField = styled(TextField)({
+    'fieldset' : {
+        borderRadius: '20px',
+    },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#EF429F',
+        },
+        '&:hover fieldset': {
+          borderColor: 'pink',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#EF429F',
+        },
+      },
+});
+
 function CartPopup()
 {
+
+    const [val, setVal] = useState('');
     const tmp = [
         'Cow1',
-        'Cow1',
-        'Cow1',
-        'Cow1',
-        'Cow1',
-        'Cow1',
+        'Cow2',
+        'Cow3',
+        'Cow4',
+        'Cow5',
+        'Cow6',
     ]
 
     return(
@@ -39,7 +59,7 @@ function CartPopup()
                         </Paper>
                         {/* contains options */}
                         <Stack direction="row" sx={{marginTop: '30px'}}>
-                            <Autocomplete disablePortal options={tmp} renderInput={(params) => <TextField {...params} variant="outlined" label="Select Playlist"/>} sx={{width: '50vw', backgroundColor: 'rgb(255,255,255,0.5)', borderRadius: '20px', outline: 'none'}} />
+                            <Autocomplete disablePortal options={tmp} renderInput={(params) => <CustomTextField {...params} variant="outlined" placeholder="Select a playlist" />}  sx={{width: '50vw', backgroundColor: 'rgb(255,255,255,0.5)', borderRadius: '20px', outline: 'none'}} />
                             <Button sx={{height: '100%'}}>CONFIRM</Button>
                         </Stack>
                     </Stack>
@@ -52,3 +72,6 @@ function CartPopup()
 }
 
 export default CartPopup;
+
+// todo:
+// add props for onclose, onopen

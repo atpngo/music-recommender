@@ -64,14 +64,7 @@ function Test()
         artist: 'Kaylee Federmann',
     }
 
-    const tmp = [
-        'Cow1',
-        'Cow1',
-        'Cow1',
-        'Cow1',
-        'Cow1',
-        'Cow1',
-    ]
+    
     return(
         <div>
             <CartPopup/>
