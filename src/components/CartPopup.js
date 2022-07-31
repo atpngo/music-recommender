@@ -96,6 +96,10 @@ function CartPopup(props)
         });
     }, []);
 
+    // A VERY BAD SOLUTION THAT WORKS BUT IS VERY BAD AND INEFFICIENT
+    useEffect(() => {
+        // setAlbumCovers(JSON.parse(localStorage.getItem("savedSongs")));
+    });
 
     // close new playlist dialog
     const handleNewPlaylistClose = () =>
@@ -129,9 +133,10 @@ function CartPopup(props)
         .then(res => {
             console.log(res);
             // remove playlists from localStorage
-            localStorage.setItem("savedSongs", []);
+            localStorage.setItem("savedSongs", JSON.stringify([]));
             setAlbumCovers([]);
             // close dialog?
+            props.onClose();
         })
         // clean up and reset cart
     }
