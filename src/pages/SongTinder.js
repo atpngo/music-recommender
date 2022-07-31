@@ -3,11 +3,16 @@ import axios from "axios";
 import Song from "../components/Song";
 import { useNavigate } from "react-router-dom";
 import { styled } from '@mui/material/styles';
-import { IconButton, Stack, Paper} from '@mui/material';
+import { IconButton, Stack, Paper, Dialog} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Howl } from 'howler';
 import CurrentSong from '../components/CurrentSong';
+import Slide from '@mui/material/Slide';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 
 const ButtonStyle = styled(IconButton)(({theme}) => ({
@@ -227,6 +232,9 @@ function SongTinder()
                         </YesButton>
                     </Stack>
             </CurrentSong>
+
+
+            
         </div>
     ); 
 }

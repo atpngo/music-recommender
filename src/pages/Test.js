@@ -2,6 +2,13 @@ import axios from "axios";
 import { Howl } from "howler";
 import React, { useEffect, useState } from "react";
 import CurrentSong from "../components/CurrentSong";
+import Slide from '@mui/material/Slide';
+import {Dialog, Stack, Paper, List} from '@mui/material';
+import AlbumCover from "../components/AlbumCover";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function Test()
 {
@@ -61,11 +68,29 @@ function Test()
     }
     return(
         <div>
-            {/* <button onClick={doThing}>Click me </button>
-            <button onClick={playSong}>1</button>
-            <button onClick={playSong}>2</button>
-            <button onClick={playSong}>3</button> */}
-            <CurrentSong song={obj}/>
+            <Dialog maxWidth='xl' open={true} TransitionComponent={Transition} keepMounted PaperProps={{style: {borderRadius: 20, backgroundColor: '#E28BBA'}}}>
+                <div style={{width: '75vw', height: '75vh', display: 'flex', padding: '30px'}}>
+                    <Stack direction="row">
+                        {/* contains songs */}
+                        <Paper elevation={10} sx={{backgroundColor: 'rgb(255,255,255,0.25)', height: '90%', width: '50vw', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden', alignContent: 'flex-start', padding: '30px', paddingLeft: '0px', paddingRight: '0px', borderRadius: '20px'}}>
+                        <Paper elevation={0} sx={{backgroundColor: 'rgb(255,255,255,0)', height: '90%', width: '50vw', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflow: 'auto', alignContent: 'flex-start', justifyContent: 'center', padding: '30px', borderRadius: '20px'}}>
+                            {JSON.parse(localStorage.getItem("savedSongs")).map((song) => {
+                                // return 
+                                // need to make something that looks like this:
+                                // <Avatar> <RemoveBtn/> </Avatar>
+                                // remove btn passed as a child component and used to remove the song from the list
+                                return <AlbumCover image={song.image}>
+                                    {/* button here later */}
+                                </AlbumCover>
+                            })}
+                        </Paper>
+                        </Paper>
+                        {/* contains options */}
+                    </Stack>
+                    
+                </div>
+
+            </Dialog>
         </div>
 
     )
