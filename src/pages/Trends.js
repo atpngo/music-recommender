@@ -20,7 +20,7 @@ function Trends()
 
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(true);
-    const [term, setTerm] = useState('short_term');
+    const [term, setTerm] = useState('long_term');
     const [songs, setSongs] = useState(null);
     const [artists, setArtists] = useState(null);
 
