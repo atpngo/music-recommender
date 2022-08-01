@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from "react-router-dom";
+import logo from "../media/logo.png";
 
 const pages = ['trends', 'songs'];
 
@@ -32,8 +33,8 @@ function NavBar()
         <Toolbar disableGutters>
 
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            Spoti-Match
+          <Box sx={{ flexGrow: 1, }}>
+            <img src={logo} style={{width: '300px', height: '100%'}}></img>
           </Box>
           
           <MenuItem>

@@ -20,11 +20,11 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <NavBar/>
+        {/* <NavBar/> */}
         <Routes>
           <Route path="/" element={<Authenticate/>}/>
           <Route path="/songs" element={<PrivateRoute/>}>
-            <Route path="/songs" element={<SongTinder/>}/>
+              <Route path="/songs" element={<SongTinder/>}/>
           </Route>
           <Route path="/test" element={<Test/>}/>
           <Route path="/trends" element={<PrivateRoute/>}>
