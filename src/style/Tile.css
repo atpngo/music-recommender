@@ -13,7 +13,7 @@ p {
 
 #song {
     font-weight: 400;
-    font-size: large;
+    font-size: 1.2em;
     margin-bottom: 2px;
 }
 
@@ -22,17 +22,17 @@ p {
 }
 
 #number {
-    font-size: larger;
+    font-size: 1.2em;
     font-weight: bold;
 }
 
 #artist {
     font-weight: 400;
-    font-size: large;
+    font-size: 1.2em;
     margin-bottom: 2px;
 }
 
 #followers {
     font-weight: 200;
-    font-size: smaller;
+    font-size: 0.8em;
 }

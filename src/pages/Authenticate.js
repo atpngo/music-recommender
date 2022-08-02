@@ -108,8 +108,8 @@ function Authenticate()
                 </Paper>
                 
             </Stack>
-            <p style={{marginTop: '10%'}}>
-                Made by Andy
+            <p style={{marginTop: '10%', fontSize: '1.5vw', color: 'white', fontWeight: 'bold'}}>
+                Made by <a style={{color: 'white', textDecoration: 'none'}} target="_blank" href="https://github.com/atpngo">Andy Ngo</a>
             </p>
             </Stack>
         </div>

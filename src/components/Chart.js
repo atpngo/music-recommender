@@ -6,10 +6,12 @@ function Chart(props)
     const options = {
         colors: ['#EF429F'],
         chart: {
+            // background: 'purple',
             toolbar: { show: false },
             zoom: { enabled: false },
             // might need to go back to this and fix this later
             fontFamily: 'Montserrat, sans-serif',
+            height: 'auto'
             // type: 'area',
         },
         grid: {
@@ -46,9 +48,7 @@ function Chart(props)
     ]
 
     return (
-        <div style={{}}>
-            <ReactApexChart options={options} series={series} type="area" height="200vh" width="600px"/>
-        </div>
+            <ReactApexChart options={options} series={series} type="area" height="100%" width="100%"/>
     );
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import SongTile from "./SongTile";
 import ArtistTile from "./ArtistTile";
-import { List, Paper } from "@mui/material";
+import { List, ListItem, Paper } from "@mui/material";
 import '../style/TileStack.css';
 
 function TileStack(props)
@@ -10,23 +10,20 @@ function TileStack(props)
     const title = props.title;
     const type = props.type;
     return (
-        <div style={{marginTop: "20px"}}>
-            <p style={{marginLeft: "1.1em", marginBottom: "0.3em", color: 'white', fontSize: '1.1em'}}>
+        <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+            <p style={{color: 'white', fontSize: '1.1em', marginBottom: '0.5vh'}}>
                 <strong>{title}</strong>
             </p>
-            <Paper elevation={10} sx={{marginLeft: "1em", marginBottom: "1em", width: "20vw", borderRadius: "15px", maxHeight: "80vh", overflow: 'auto', backgroundColor: 'rgb(255, 255, 255, 0.5)'}}>
-                <br/>
-                <List>
+            <Paper elevation={10} sx={{width: "20vw", borderRadius: "15px", height: "80vh", backgroundColor: 'rgb(255, 255, 255, 0.25)', display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden', overflowY: 'scroll', paddingLeft: '1vw'}}>
                     {type === "songs" ? 
-                    data.map((song, key) => {
-                        return <div><SongTile data={song}/> <br/></div>
-                    })
-                    :
-                    data.map((artist, key) => {
-                        return <div><ArtistTile data={artist}/><br/></div>
-                    })
-                }
-                </List>
+                        data.map((song, key) => {
+                            return <SongTile data={song}/>
+                        })
+                        :
+                        data.map((artist, key) => {
+                            return <ArtistTile data={artist}/>
+                        })
+                    }
             </Paper>
         </div>
     );

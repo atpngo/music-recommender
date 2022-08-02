@@ -142,40 +142,38 @@ function Trends()
         
     }))
 
+    const spacer = {
+        marginTop: '2vh'
+    }
+
     return (
-        <div>
-            {/* <button onClick={doThis}>Debug</button> */}
+        <div style={{height: '90vh', display: 'flex', alignItems: 'center', paddingTop: '1vw', paddingLeft: '1.5vw', paddingRight: '1vw'}}>
             
-
-            {/* Song Tiles */}
             <Stack direction="row">
-                <Stack direction="column" sx={{marginLeft: "2em", marginRight: "2em", marginTop: "1em", display: "flex", alignContent: "center", justifyContent: "center"}}>
+                {/* Icon and Buttons */}
+                <Stack direction="column" sx={{marginRight: "2vw", display: "flex", alignContent: "center", justifyContent: "center"}}>
                     <Profile/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                    {/* Buttons */}
+                    <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: '10vh'}}>
                         <CustomButton onClick={selectTerm} id="short" variant="contained">Past Month</CustomButton>
-                        <br/>
+                        <div style={spacer}/>
                         <CustomButton onClick={selectTerm} id="medium" variant="contained">Past 6 Months</CustomButton>
-                        <br/>
+                        <div style={spacer}/>
                         <CustomButton onClick={selectTerm} id="long" variant="contained">All Time</CustomButton>
+                        <div style={spacer}/>
                         <br/>
-
                     </div>
                 </Stack>
+
+                {/* Top Items */}
                 <TileStack title="Top 50 Songs" type="songs" data={songs}/>
+                <div style={{marginLeft:'1vw'}}/>
                 <TileStack title="Top 50 Artists" type="artists" data={artists}/>
+
                 {/* Charts */} 
-                {/* {term && histogramCategories.map((category, index) => { return <Chart bgcolor='#b7d0ea' data={data[category]} labels={['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0']} /> })} */}
-                 <Stack direction="column">
-                    <br/>
-                    {histogramCategories.map((category, key) => {
-                        return <PaperChart data={data[category]} title={category.charAt(0).toUpperCase() + category.slice(1)} />
-                    })}
-                 </Stack>
+                 <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+                    {histogramCategories.map((category, key) => { return <PaperChart data={data[category]} title={category.charAt(0).toUpperCase() + category.slice(1)} />})}
+                 </div>
             </Stack>
         </div>
     )

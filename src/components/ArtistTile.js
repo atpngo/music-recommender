@@ -8,9 +8,8 @@ function ArtistTile(props)
     const artist = props.data;
 
     return (
-        <div>
-            <Stack direction="row" spacing={2} sx={{'paddingRight': '3em', 'paddingLeft': '2em'}}>
-                    <Box marginRight={0.5} width={10} display="flex" alignItems="center" justifyContent="center">
+            <Stack direction="row" spacing={2} sx={{width: '100%', marginTop: '2vh', marginBottom: '1vh'}}>
+                    <Box width={10} display="flex" alignItems="center" justifyContent="center">
                         <p id="number">{artist.index}</p>
                     </Box>
                         <Box direction="column" display="flex" alignItems="center">
@@ -21,7 +20,6 @@ function ArtistTile(props)
                             <p id="followers">{artist.artists}</p>
                         </Stack>
             </Stack>
-        </div>
     )
 }
 
