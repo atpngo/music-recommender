@@ -13,7 +13,7 @@ function ArtistTile(props)
                         <p id="number">{artist.index}</p>
                     </Box>
                         <Box direction="column" display="flex" alignItems="center">
-                        <Avatar variant="circle" sx={{width:92, height:92}} src={artist.image}/>
+                        <Avatar variant="circle" imgProps={{draggable: false}} sx={{width:92, height:92}} src={artist.image}/>
                         </Box>
                         <Stack id="desc" direction="column" spacing={-0.5} >
                             <p id="artist">{artist.title}</p>

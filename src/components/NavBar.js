@@ -34,7 +34,7 @@ function NavBar()
 
           
           <Box sx={{ flexGrow: 1, }}>
-            <img src={logo} style={{width: '300px', height: '100%'}}></img>
+            <img draggable="false" src={logo} style={{width: '300px', height: '100%'}}></img>
           </Box>
           
           <MenuItem>

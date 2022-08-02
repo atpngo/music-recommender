@@ -14,7 +14,7 @@ function SongTile(props)
                         <p id="number">{song.index}</p>
                     </Box>
                         <Box direction="column" display="flex" alignItems="center">
-                        <Avatar variant="square" sx={{width:92, height:92}} src={song.image}/>
+                        <Avatar imgProps={{draggable: false}} variant="square" sx={{width:92, height:92}} src={song.image}/>
                         </Box>
                         <Stack id="desc" direction="column" spacing={-0.5} >
                             <p id="song">{song.title}</p>

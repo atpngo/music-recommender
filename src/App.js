@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import Error from "./pages/Error";
 import PrivateRoute from "./util/PrivateRoute";
 import { useEffect } from "react";
+import './App.css';
 
 function App() {
 

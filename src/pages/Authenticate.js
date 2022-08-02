@@ -28,7 +28,7 @@ function SpotifyButton(props)
     return(
         <CustomButton component={Paper} elevation={5} onClick={props.onClick}>
             <Stack direction="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <img src={spotifyLogo} width='20%' height='20%'/>
+                <img draggable="false" src={spotifyLogo} width='20%' height='20%'/>
                 
                 <Stack direction="column" sx={{marginLeft: '40px', display: 'flex', alignItems: 'center'}}>
                     <p>Login with</p>
@@ -92,7 +92,7 @@ function Authenticate()
             <Stack direction="row">
                 <Stack direction="column" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%'}}>
                     {/* <button onClick={debug}>Debug</button> */}
-                    <img width="90%" src={logo}/>
+                    <img draggable="false" width="90%" src={logo}/>
                     <div style={{marginTop: '2vh'}}/>
                     <p style={subtitle}>
                         Find your favorite <strong>singles</strong> :D
