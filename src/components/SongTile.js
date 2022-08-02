@@ -9,7 +9,7 @@ function SongTile(props)
 
 
     return (
-            <Stack direction="row" spacing={2} sx={{width: '100%', marginTop: '2vh', marginBottom: '1vh'}}>
+            <Stack direction="row" spacing={2} sx={{width: '100%', marginTop: '2vh', marginBottom: '1vh', marginRight: '1vw'}}>
                     <Box width={10} display="flex" alignItems="center" justifyContent="center">
                         <p id="number">{song.index}</p>
                     </Box>

@@ -14,7 +14,7 @@ function TileStack(props)
             <p style={{color: 'white', fontSize: '1.1em', marginBottom: '0.5vh'}}>
                 <strong>{title}</strong>
             </p>
-            <Paper elevation={10} sx={{width: "20vw", borderRadius: "15px", height: "80vh", backgroundColor: 'rgb(255, 255, 255, 0.25)', display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden', overflowY: 'scroll', paddingLeft: '1vw'}}>
+            <Paper elevation={10} sx={{width: "18vw", borderRadius: "15px", height: "80vh", backgroundColor: 'rgb(255, 255, 255, 0.25)', display: 'flex', flexDirection: "row", flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden', overflowY: 'scroll', paddingLeft: '2vw'}}>
                     {type === "songs" ? 
                         data.map((song, key) => {
                             return <SongTile data={song}/>
