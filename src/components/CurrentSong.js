@@ -15,7 +15,7 @@ function CurrentSong(props)
 
                     {/* Song Name */}
                     {/* <p style={{fontSize: '2.5em', marginBottom: '10px', marginTop: '10px', color: 'white'}}>{props.song.title}</p> */}
-                    <p style={{fontSize: '2vw', marginBottom: '10px', marginTop: '10px', color: 'white'}}>{props.song.title}</p>
+                    <p style={{fontSize: '2vw', marginBottom: '10px', marginTop: '10px', color: 'white', textAlign: 'center'}}>{props.song.title}</p>
                     {/* Artist Name */}
                     <p style={{fontSize: '1.25vw', color: 'white'}}>{props.song.artist}</p>
                     {props.children}

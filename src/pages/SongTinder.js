@@ -151,7 +151,8 @@ function SongTinder()
                         return new Howl({
                             src: song.url,
                             html5: true,
-                            volume: 0.05
+                            volume: 0.05,
+                            loop: true
                         })
                     });
                     setHowlers(songSources);
