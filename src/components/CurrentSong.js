@@ -9,9 +9,9 @@ function CurrentSong(props)
     
     return(
         <div>
-            <Paper elevation={10} sx={{width: '600px', height: '85vh', backgroundColor: 'rgb(255,255,255,0.18)', borderRadius: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <Paper elevation={10} sx={{width: '40vw', height: '85vh', backgroundColor: 'rgb(255,255,255,0.18)', borderRadius: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Stack direction="column" sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <Avatar component={Paper} elevation={5} variant="square" src={props.song.image} sx={{width: '80%', height: "auto", borderRadius: '10px'}}/>
+                    <Avatar component={Paper} elevation={5} variant="square" src={props.song.image} sx={{width: '25vw', height: "auto", borderRadius: '10px'}}/>
 
                     {/* Song Name */}
                     {/* <p style={{fontSize: '2.5em', marginBottom: '10px', marginTop: '10px', color: 'white'}}>{props.song.title}</p> */}

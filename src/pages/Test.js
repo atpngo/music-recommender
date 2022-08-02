@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Loading from "../components/Loading";
-
-
-
+import '../style/RoundButton.css';
+import x from '../media/x.png';
+import heart from '../media/heart.png';
 
 function Test()
 {
@@ -16,11 +16,41 @@ function Test()
         }
     });
 
+    const debug = () => 
+    {
+        console.log("hey");
+    }
+
+    const HeartButton = (props) => 
+    {
+        return(
+            <div onClick={props.onClick} class="round-button">
+                <div class="heart-button">
+                    <img draggable="false" class="x" src={heart}></img>
+                </div>
+            </div>
+        );
+    }
+
+    const NoButton = (props) => 
+    {
+        return(
+            <div onClick={props.onClick} class="round-button">
+                <div class="no-button">
+                    <img draggable="false" class="x" src={x}></img>
+                </div>
+            </div>
+        );
+    }
+
+    
+
+
     return(
         <div>
-            <Loading/>
+        <NoButton onClick={debug}/>
+        <HeartButton onClick={debug}/>
         </div>
-
     )
 }
 

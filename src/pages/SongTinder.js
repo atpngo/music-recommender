@@ -1,42 +1,48 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { styled } from '@mui/material/styles';
-import { IconButton, Stack, Paper, Dialog} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Stack, Paper, Dialog} from '@mui/material';
 import { Howl } from 'howler';
 import CurrentSong from '../components/CurrentSong';
 import CartPopup from "../components/CartPopup";
 import Loading from "../components/Loading";
+import '../style/RoundButton.css';
+import x from '../media/x.png';
+import heart from '../media/heart.png';
 
 
-const ButtonStyle = styled(IconButton)(({theme}) => ({
-    color: 'white',
-    width: '125px',
-    height: '125px',
-}));
+const CartButton = (props) =>
+{
+    return(
+        <div onClick={props.onClick} class="round-button">
+            <div class="cart-button">
+                <a class="round-button">{props.children}</a>
+            </div>
+        </div>
+    );
+}
 
-const YesButton = styled(ButtonStyle)(({theme}) => ({
-    backgroundColor: '#72AF5C',
-    '&:hover': {
-        backgroundColor: '#67a152'
-    }
-}));
+const HeartButton = (props) => 
+{
+    return(
+        <div onClick={props.onClick} class="round-button">
+            <div class="heart-button">
+                <img draggable="false" class="x" src={heart}></img>
+            </div>
+        </div>
+    );
+}
 
-const NoButton = styled(ButtonStyle)(({theme}) => ({
-    backgroundColor: '#E25D5D',
-    '&:hover': {
-        backgroundColor: '#c95151'
-    }
-}))
-
-const CartButton = styled(ButtonStyle)(({theme}) => ({
-    backgroundColor: '#EF429F',
-    '&:hover': {
-        backgroundColor: '#d9388f'
-    }
-}));
+const NoButton = (props) => 
+{
+    return(
+        <div onClick={props.onClick} class="round-button">
+            <div class="no-button">
+                <img draggable="false" class="x" src={x}></img>
+            </div>
+        </div>
+    );
+}
 
 function SongTinder() 
 {
@@ -133,7 +139,7 @@ function SongTinder()
                             'title':input.name,
                             'artist':(input.artists.map((artist, key) => artist.name)).join(', '),
                             'player':"https://open.spotify.com/embed/track/" + input.id,
-                            'image': input.album.images[1].url,
+                            'image': input.album.images[0].url,
                             'url':input.preview_url,
                             'uri':input.uri,
                         }
@@ -217,30 +223,31 @@ function SongTinder()
         setOpen(false);
     }
 
+    const Spacer = (props) =>
+    {
+        return <div style={{marginInline: props.space}}/>
+    }
+
     return(
         // check if playlist id is in localstorage
         <div style={{height: '92vh', display: 'flex', alignItems:'center', justifyContent: 'center'}}>
-            {/* <Song title={data[index].title} artist={data[index].artist} url={data[index].player}/> */}
-            {/* <button onClick={likeCurrentSong}>Like It</button> */}
-            {/* <button onClick={dislikeCurrentSong}>Not a Fan</button> */}
-            {/* <button onClick={debug}>Debug</button> */}
             <CartPopup open={open} onClose={handleClose} songs={songs}/>
 
-            <CartButton onClick={openCart} component={Paper} elevation={5} sx={{height: '100px', width: '100px', position: 'absolute', top: '80%', right: '3%', color: 'white'}}>
-                {JSON.parse(localStorage.getItem("savedSongs")).length}
-            </CartButton>
+            
             <CurrentSong song={data[index]}>
-                    <Stack direction="row" sx={{marginTop: '3vh'}}>
-                        <NoButton component={Paper} elevation={3} onClick={dislikeCurrentSong}>
-                            <CloseIcon sx={{fontSize: '365%'}}/>
-                        </NoButton>
+                    <Stack direction="row" sx={{marginTop: '3vh', display: 'flex', justifyContent: 'center'}}>
+                        <NoButton onClick={dislikeCurrentSong}/>
+
                         {/* Distance between buttons */}
-                        <div style={{marginLeft: '200px'}}/>
+                        <Spacer space="2vw"/>
+                        <CartButton onClick={openCart}>
+                            {JSON.parse(localStorage.getItem("savedSongs")).length}
+                        </CartButton>
+                        <Spacer space="2vw"/>
+
                         {/* <YesButton aria-label="yes" sx={{backgroundColor: '#72AF5C', color: 'white', width: '125px', height: '125px'}}> */}
-                        <YesButton component={Paper} elevation={3} onClick={likeCurrentSong}>
-                            {/* <FavoriteIcon sx={{transform: 'scale(3)'}} /> */}
-                            <FavoriteIcon sx={{fontSize: '325%'}} />
-                        </YesButton>
+                        <HeartButton onClick={likeCurrentSong}/>
+
                     </Stack>
             </CurrentSong>
 
