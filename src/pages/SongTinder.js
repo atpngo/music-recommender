@@ -76,13 +76,10 @@ function SongTinder()
         console.log("fetching songs...");
     }, []);
 
-    useEffect(() => {
-        console.log("heyyyy man");
-        // document.getElementsByClassName("b8")[0].click();
 
-    }, [index])
     const getSongs = () =>
     {
+        setSongs(JSON.parse(localStorage.getItem("savedSongs")));
         setIndex(0);
         setLoading(true);
         const songs = '3PeSchiOZRgnnmAFrgDw4v,2HUoHvLUQlh2FO1kaIjkpN,7CQGybO25VSUNwY2hS7n6J,3XOAVwEjXprqsWRH7u93ae,3jIkw3Q7Lgl71fJdFnr1hf';
