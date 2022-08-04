@@ -26,6 +26,9 @@ function Trends()
     const [songs, setSongs] = useState(null);
     const [artists, setArtists] = useState(null);
     const {width, height} = useWindowDimensions();
+    const [shortWorks, setShort] = useState(false);
+    const [mediumWorks, setMedium] = useState(false);
+    const [longWorks, setLong] = useState(false);
     const navigate = useNavigate();
 
     const spotify = axios.create({
@@ -36,8 +39,33 @@ function Trends()
         }
     });
 
+    const terms = ['short_term', 'medium_term', 'long_term'];
+
 
     useEffect(() => {
+        // listening history bugfix
+        axios.all(terms.map(term => spotify.get('me/top/tracks?time_range=' + term + '&limit=50')))
+        .then(res => {
+            for (let i=0; i<3; i++)
+            {
+                if (res[i].data.items.length > 0)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            setShort(true);
+                            break;
+                        case 1:
+                            setMedium(true);
+                            break;
+                        case 2:
+                            setLong(true);
+                            break;
+                    }
+                }
+            }
+
+
 
 
         // fetch data and then visualize 
@@ -106,6 +134,8 @@ function Trends()
         {
             setLoading(false);
         }
+    });
+
     }, [term, setTerm]);
 
     if (loading)
@@ -177,11 +207,11 @@ function Trends()
                     <Profile/>
                     {/* Buttons */}
                     <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: '10vh'}}>
-                        <CustomButton onClick={selectTerm} id="short" variant="contained">Past Month</CustomButton>
+                        <CustomButton onClick={selectTerm} disabled={!shortWorks} id="short" variant="contained">Past Month</CustomButton>
                         <div style={spacer}/>
-                        <CustomButton onClick={selectTerm} id="medium" variant="contained">Past 6 Months</CustomButton>
+                        <CustomButton onClick={selectTerm} disabled={!mediumWorks} id="medium" variant="contained">Past 6 Months</CustomButton>
                         <div style={spacer}/>
-                        <CustomButton onClick={selectTerm} id="long" variant="contained">All Time</CustomButton>
+                        <CustomButton onClick={selectTerm} disabled={!longWorks} id="long" variant="contained">All Time</CustomButton>
                         <div style={spacer}/>
                         <br/>
                     </div>
