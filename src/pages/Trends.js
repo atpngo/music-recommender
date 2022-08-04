@@ -74,7 +74,10 @@ function Trends()
             // get id
             spotify.get('me').then(res => {
                 localStorage.setItem("userID", res.data.id);
-                localStorage.setItem("userImage", res.data.images[0].url);
+                if (res.data.images.length > 0)
+                    localStorage.setItem("userImage", res.data.images[0].url);
+                else
+                    localStorage.setItem("userImage", 'https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg');
                 localStorage.setItem("userName", res.data.display_name);
             
             
