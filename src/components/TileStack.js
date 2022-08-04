@@ -1,7 +1,7 @@
 import React from "react";
 import SongTile from "./SongTile";
 import ArtistTile from "./ArtistTile";
-import { List, ListItem, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import '../style/TileStack.css';
 
 function TileStack(props)

@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Stack, Paper, Dialog} from '@mui/material';
+import { Stack } from '@mui/material';
 import { Howl } from 'howler';
 import CurrentSong from '../components/CurrentSong';
 import CartPopup from "../components/CartPopup";

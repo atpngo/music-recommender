@@ -1,6 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import Loading from "../components/Loading";
+import React from "react";
 import '../style/RoundButton.css';
 import x from '../media/x.png';
 import heart from '../media/heart.png';

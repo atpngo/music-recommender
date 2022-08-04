@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Credentials from "../Credentials";
 import { useNavigate } from "react-router-dom";
 import demo from '../media/demo.mp4';
 import logo from '../media/logo.png';
