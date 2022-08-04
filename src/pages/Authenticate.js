@@ -71,12 +71,12 @@ function MobileSpotifyButton(props)
 
 function Authenticate()
 {
-    const spotify = Credentials();
+    // const spotify = Credentials();
     const navigate = useNavigate();
     const [token, setToken] = useState('');
     const {height, width} = useWindowDimensions();
 
-    let scopes = spotify.SCOPES.join(spotify.SPACE_DELIMETER);
+    let scopes = process.env.REACT_APP_SCOPES.split(' ').join(process.env.REACT_APP_SPACE_DELIMETER);
 
     const getTokenData = (hash) =>
     {
@@ -88,6 +88,11 @@ function Authenticate()
     }
 
     useEffect(() => {
+        console.log('start');
+        console.log(process.env.REACT_APP_AUTHORIZE_ENDPOINT);
+        console.log('end');
+
+
         if (window.location.hash)
         {
             let data = getTokenData(window.location.hash);
@@ -105,7 +110,7 @@ function Authenticate()
 
 
     const login = () => {
-        window.location = `${spotify.AUTHORIZE_ENDPOINT}?client_id=${spotify.CLIENT_ID}&redirect_uri=${spotify.REDIRECT_URL}&scope=${scopes}&response_type=token&show_dialog=true`;
+        window.location = `${process.env.REACT_APP_AUTHORIZE_ENDPOINT}?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URL}&scope=${scopes}&response_type=token&show_dialog=true`;
     }
 
     const debug = () =>
