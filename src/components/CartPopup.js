@@ -44,12 +44,12 @@ function CartPopup(props)
     const [loading, setLoading] = useState(true);
     const [playlists, setPlaylists] = useState([]);
     // used to open the dialogue for new playlist
-    // const [selection, setSelection] = useState(null);
-    let selection = null;
-    const setSelection = (arg) =>
-    {
-        selection = arg;
-    }
+    const [selection, setSelection] = useState(null);
+    // let selection = null;
+    // const setSelection = (arg) =>
+    // {
+    //     selection = arg;
+    // }
     const [selectable, setSelectable] = useState(false);
     const [openNewPlaylist, setOpenNewPlaylist] = useState(false);
     const [newPlaylistName, setNewPlaylistName] = useState(null);
@@ -102,10 +102,6 @@ function CartPopup(props)
         });
     }, []);
 
-    // A VERY BAD SOLUTION THAT WORKS BUT IS VERY BAD AND INEFFICIENT
-    // useEffect(() => {
-    //     setAlbumCovers(JSON.parse(localStorage.getItem("savedSongs")));
-    // });
 
     // close new playlist dialog
     const handleNewPlaylistClose = () =>
@@ -120,7 +116,7 @@ function CartPopup(props)
         // need to add another conditional here
         console.log(selection);
 
-        if (selection.id == '0')
+        if (selection.id === '0')
         {
             // make a popup
             setOpenNewPlaylist(true);
@@ -131,10 +127,16 @@ function CartPopup(props)
 
         // use playlist id and make an axios call to add songs in cart 
         // get saved songs from localStorage
+        // clean up and reset cart
+        addSongsToPlaylist(selection.id);
+    }
+
+    const addSongsToPlaylist = (id) =>
+    {
         let uris = JSON.parse(localStorage.getItem("savedSongs")).map(song => {
             return song.uri
         });
-        spotify.post('playlists/' + selection.id + '/tracks', uris)
+        spotify.post('playlists/' + id + '/tracks', uris)
         .then(res => {
             console.log(res);
             // remove playlists from localStorage
@@ -143,7 +145,6 @@ function CartPopup(props)
             // close dialog?
             props.onClose();
         })
-        // clean up and reset cart
     }
 
     const handleInputChange = (e, newVal) => 
@@ -158,7 +159,6 @@ function CartPopup(props)
         }
         // selection = newVal;
         setSelection(newVal);
-        console.log(selection);
         console.log(newVal);
     }
 
@@ -184,7 +184,7 @@ function CartPopup(props)
             .then(res => {
                 // need to extract new playlist and set it as selection so we actually add songs to it
                 setSelection(res.data);
-                processQuery();
+                addSongsToPlaylist(res.data.id);
             });
             setOpenNewPlaylist(false);
         }

@@ -7,6 +7,8 @@ import PaperChart from "../components/PaperChart";
 import { Stack, Button } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import Loading from "../components/Loading";
+import useWindowDimensions from "../util/Window";
+import { useNavigate } from "react-router-dom";
 
 function Trends()
 {
@@ -23,7 +25,8 @@ function Trends()
     const [term, setTerm] = useState('long_term');
     const [songs, setSongs] = useState(null);
     const [artists, setArtists] = useState(null);
-    const queries = ['short_term', 'medium_term', 'long_term'];
+    const {width, height} = useWindowDimensions();
+    const navigate = useNavigate();
 
     const spotify = axios.create({
         baseURL: 'https://api.spotify.com/v1/',
@@ -147,6 +150,22 @@ function Trends()
 
     const spacer = {
         marginTop: '2vh'
+    }
+
+    const goToSongs = () =>
+    {
+        navigate('/songs');
+    }
+
+    if (width < height)
+    {
+        return (
+            <div style={{height: '80vh', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
+                <p>Mobile Version is a Work in Progress!</p>
+                <div style={{flexBasis: '100%', height: '0'}}></div>
+                <button onClick={goToSongs}>Go to Songs</button>
+            </div>
+        );
     }
 
     return (

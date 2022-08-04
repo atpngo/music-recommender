@@ -82,41 +82,34 @@ function SongTinder()
         setSongs(JSON.parse(localStorage.getItem("savedSongs")));
         setIndex(0);
         setLoading(true);
-        const songs = '3PeSchiOZRgnnmAFrgDw4v,2HUoHvLUQlh2FO1kaIjkpN,7CQGybO25VSUNwY2hS7n6J,3XOAVwEjXprqsWRH7u93ae,3jIkw3Q7Lgl71fJdFnr1hf';
+        const queries = ['short_term', 'medium_term', 'long_term'];
+        axios.all(queries.map(query => spotify.get('me/top/tracks?time_range=' + query + '&limit=5')))
+        .then(res => {
+            let seed = null;
+            // most recent last so go backwards
+            for (let i=res.length-1; i>=0; i--)
+            {
+                if (res[i].data.items.length === 5)
+                {
+                    seed = res[i].data.items.map(song => song.id);
+                }
+            }
+            seed = seed.join(',');
 
-        spotify.get("recommendations?limit=50&seed_tracks=" + songs, {
+        spotify.get("recommendations?limit=50&seed_tracks=" + seed, {
             headers : {
                 Authorization: "Bearer " + localStorage.getItem("accessToken")
             }
         })
         .then((res) => {
-            console.log(res.data.tracks);
             let id = (res.data.tracks.map(track => track.id)).join("%2C");
-            console.log(id);
-            for (const [index, item] of res.data.tracks.entries())
-            {
-                if (!item.preview_url)
-                {
-                    console.log(`${item.name} did not have a preview url (index: ${index})`);
-                }
-            }
-            console.log('----------------------');
             spotify.get("tracks?market=US&ids=" + id)
                 .then(newres => {
                     let fetchedSongs = [...newres.data.tracks]
                     let bads = [];
-                    for (const [index, item] of newres.data.tracks.entries())
-                    {
-                        if (!item.preview_url)
-                        {
-                            console.log(`${item.name} did not have a preview url (index: ${index})`);
-                            bads.push(index);
-                        }
-                    }
                     
                     if (bads.length == 0)
                     {
-                        console.log("WOOOO");
                     }
                     else
                     {
@@ -141,7 +134,6 @@ function SongTinder()
                             'uri':input.uri,
                         }
                     });
-                    console.log(formattedData);
                     setData(formattedData);
                     // set up howlers
                     let songSources = formattedData.map(song => {
@@ -154,14 +146,14 @@ function SongTinder()
                     });
                     setHowlers(songSources);
                     // play song?
-                    console.log('starting song...');
                     songSources[0].play();
-                    console.log('played song...');
                     setLoading(false);
                     
                 })
-             
+            
         })
+    })
+
     }
 
     const likeCurrentSong = () =>
