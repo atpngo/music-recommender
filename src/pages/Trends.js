@@ -23,6 +23,7 @@ function Trends()
     const [term, setTerm] = useState('long_term');
     const [songs, setSongs] = useState(null);
     const [artists, setArtists] = useState(null);
+    const queries = ['short_term', 'medium_term', 'long_term'];
 
     const spotify = axios.create({
         baseURL: 'https://api.spotify.com/v1/',
@@ -34,6 +35,8 @@ function Trends()
 
 
     useEffect(() => {
+
+
         // fetch data and then visualize 
         if (term)
         {

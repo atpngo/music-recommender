@@ -7,11 +7,11 @@ import logo from '../media/logo.png';
 import { Button, Paper, Stack } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import spotifyLogo from '../media/spotify.png';
+import useWindowDimensions from "../util/Window";
 
 // Spotify Button
 function SpotifyButton(props)
 {
-
     const CustomButton = styled(Button)(({theme}) => ({
         color: 'white',
         fontSize: '2vw',
@@ -39,11 +39,42 @@ function SpotifyButton(props)
     )
 }
 
+function MobileSpotifyButton(props)
+{
+    const CustomButton = styled(Button)(({theme}) => ({
+        color: 'white',
+        fontSize: '1.2em',
+        lineHeight: '1em',
+        textTransform: 'none',
+        backgroundColor: '#7DE774',
+        width: '200px',
+        height: '10vh',
+        borderRadius: '2vw',
+        '&:hover' : {
+            backgroundColor: '#73e069'
+        }
+    }))
+    return(
+        <CustomButton component={Paper} elevation={5} onClick={props.onClick}>
+            <Stack direction="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <img draggable="false" src={spotifyLogo} width='20%' height='20%'/>
+                
+                <Stack direction="column" sx={{marginLeft: '10%', display: 'flex', alignItems: 'center'}}>
+                    <p>Login with</p>
+                    <p>Spotify</p>
+                </Stack>
+
+            </Stack>
+        </CustomButton>
+    )
+}
+
 function Authenticate()
 {
     const spotify = Credentials();
     const navigate = useNavigate();
     const [token, setToken] = useState('');
+    const {height, width} = useWindowDimensions();
 
     let scopes = spotify.SCOPES.join(spotify.SPACE_DELIMETER);
 
@@ -84,6 +115,35 @@ function Authenticate()
 
     const subtitle = {
         fontSize:'1.25vw', color: 'white'
+    }
+
+    const mobileSubtitle = {
+        fontSize: '1em', color: 'white'
+    }
+    if (width < height)
+    {
+        return(
+            <div style={{display: 'flex', height: '100vh',alignItems: 'center', justifyContent: 'center'}}>
+                <Stack direction="column" style={{display: 'flex', alignItems: 'center'}}>
+                    <img draggable="false" width="90%" src={logo}/>
+                    <div style={{marginTop: '2vh'}}/>
+                    <p style={mobileSubtitle}>
+                        Find your favorite <strong>singles</strong> :D
+                    </p>
+                    <p style={mobileSubtitle}>hahahah lol</p>
+                    <div style={{marginTop: '10%'}}/>
+
+                    <MobileSpotifyButton onClick={login}/>
+                    <div style={{marginTop: '10%'}}/>
+                    <Paper elevation={10} sx={{width: '80%', height: '30%',backgroundColor: 'rgb(255,255,255,0.25)', padding: '15px 15px 12px 15px', borderRadius: '10px'}}>
+                    <video width='100%' muted autoPlay={"autoplay"} preLoad="auto" loop src={demo}/>
+                    </Paper>
+                    <p style={{marginTop: '10%', fontSize: '1em', color: 'white', fontWeight: 'bold'}}>
+                    Made by <a style={{color: 'white', textDecoration: 'none'}} target="_blank" href="https://github.com/atpngo">Andy Ngo</a>
+                    </p>
+                </Stack>
+            </div>
+        );
     }
 
     return(
