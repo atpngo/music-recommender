@@ -16,7 +16,7 @@ const CartButton = (props) =>
     return(
         <div onClick={props.onClick} class="round-button">
             <div class="cart-button">
-                <a class="round-button">{props.children}</a>
+                <a class="round-button" style={{fontSize: '2em'}}>{props.children}</a>
             </div>
         </div>
     );
