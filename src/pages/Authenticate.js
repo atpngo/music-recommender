@@ -79,18 +79,13 @@ function Authenticate()
     const getTokenData = (hash) =>
     {
         const params = hash.substring(1).split("&");
-        console.log(params);
+        
         return params.map((param) => {
             return param.split("=")[1];
         });
     }
 
     useEffect(() => {
-        console.log('start');
-        console.log(process.env.REACT_APP_AUTHORIZE_ENDPOINT);
-        console.log('end');
-
-
         if (window.location.hash)
         {
             let data = getTokenData(window.location.hash);
@@ -143,6 +138,8 @@ function Authenticate()
                     </Paper>
                     <p style={{marginTop: '10%', fontSize: '1em', color: 'white', fontWeight: 'bold'}}>
                     Made by <a style={{color: 'white', textDecoration: 'none'}} target="_blank" href="https://github.com/atpngo">Andy Ngo</a>
+                    <br/>
+                    Powered by Spotify Web API
                     </p>
                 </Stack>
             </div>
@@ -171,8 +168,10 @@ function Authenticate()
                 </Paper>
                 
             </Stack>
-            <p style={{marginTop: '10%', fontSize: '1.5vw', color: 'white', fontWeight: 'bold'}}>
+            <p style={{marginTop: '10%', fontSize: '1.5vw', color: 'white', fontWeight: 'bold', textAlign: 'center'}}>
                 Made by <a style={{color: 'white', textDecoration: 'none'}} target="_blank" href="https://github.com/atpngo">Andy Ngo</a>
+                <br/>
+                Powered by Spotify Web API
             </p>
             </Stack>
         </div>

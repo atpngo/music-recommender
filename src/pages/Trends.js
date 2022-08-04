@@ -53,7 +53,7 @@ function Trends()
                 spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
                 .then(
                     res => {
-                        console.log(res.data);
+                        
                         setSongs(res.data.items.map((item, key) => {
                             return {
                                 image: item.album.images[1].url,
@@ -62,13 +62,13 @@ function Trends()
                                 index: key+1
                             }
                         }));
-                        // console.log(res.data.items.map(item => item.album.images[1].url));
+                        // 
                         let trackIds = res.data.items.map((item, key) => item.id).join(',');
                         spotify.get('/audio-features?ids=' + trackIds)
                         .then(
                             res => {
                                 let audio_features = res.data.audio_features;
-                                // console.log(audio_features);
+                                // 
                                 // handle histograms
                                 for (const category of histogramCategories)
                                 {
@@ -115,8 +115,8 @@ function Trends()
 
     const doThis = () =>
     {
-        // console.log(songs);
-        console.log(songs);
+        // 
+        
     }
 
     const selectTerm = (e) => {

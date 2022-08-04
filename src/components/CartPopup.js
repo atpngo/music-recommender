@@ -77,10 +77,10 @@ function CartPopup(props)
             {
                 let pages = Array(numQueries).join(".").split(".");
                 pages = pages.map((item, index) => "me/playlists?limit=50&offset=" + (50*index).toString());
-                console.log(pages);
+                
                 axios.all(pages.map(page => spotify.get(page)))
                 .then( res => {
-                    console.log(res);
+                    
 
                     let playlistIds = [];
                     for (const response of res)
@@ -93,7 +93,7 @@ function CartPopup(props)
                     filteredPlaylist = filteredPlaylist.map(obj => ({...obj, selectable: true}));
                     filteredPlaylist.unshift({name: '----', selectable: false})
                     filteredPlaylist.unshift({name: 'Create Playlist', id: '0', selectable: true});
-                    console.log(filteredPlaylist);
+                    
                     setPlaylists(filteredPlaylist);
                     setLoading(false);
                 })
@@ -114,13 +114,13 @@ function CartPopup(props)
     {
         // make new playlist if needed
         // need to add another conditional here
-        console.log(selection);
+        
 
         if (selection.id === '0')
         {
             // make a popup
             setOpenNewPlaylist(true);
-            console.log('ahhh make a new thing');
+            
             setNewPlaylistName(null);
             return;
         }
@@ -138,7 +138,7 @@ function CartPopup(props)
         });
         spotify.post('playlists/' + id + '/tracks', uris)
         .then(res => {
-            console.log(res);
+            
             // remove playlists from localStorage
             localStorage.setItem("savedSongs", JSON.stringify([]));
             // setAlbumCovers([]);
@@ -159,7 +159,7 @@ function CartPopup(props)
         }
         // selection = newVal;
         setSelection(newVal);
-        console.log(newVal);
+        
     }
 
     const handleNewPlaylistChange = (e, newVal) =>
@@ -173,7 +173,7 @@ function CartPopup(props)
     {
         // playlist new is newPlaylistName
         
-        console.log(newPlaylistName);
+        
         if (newPlaylistName !== null && newPlaylistName.length > 0)
         {
             spotify.post('users/' + localStorage.getItem('userID') + '/playlists', {
@@ -197,7 +197,7 @@ function CartPopup(props)
 
     const debug = () =>
     {
-        console.log(selection);
+        
     }
 
     return(

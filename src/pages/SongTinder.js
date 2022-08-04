@@ -73,7 +73,7 @@ function SongTinder()
         {
             navigate("/");
         }
-        console.log("fetching songs...");
+        
     }, []);
 
 
@@ -114,7 +114,7 @@ function SongTinder()
                     else
                     {
                         let id = bads.join(",");
-                        console.log(id);
+                        
                         // remove from data array
                         // for each "bad index", remove the value at that index from the array
                         for (const val of bads.reverse())
@@ -168,7 +168,7 @@ function SongTinder()
         //     }
         // )
         // .then(res => {
-        //     console.log(res);
+        //     
         //     setLoading(false);
         // })
         setSongs(tmpStorage);
@@ -186,7 +186,7 @@ function SongTinder()
         // stop current playing song and play the next one
         howlers[index].stop();
         howlers[index+1].play();
-        // console.log(index);
+        // 
         if (index+1 == data.length)
         {
             getSongs();
@@ -195,7 +195,7 @@ function SongTinder()
     
     const debug = () =>
     {
-        console.log(howlers);
+        
     }
 
     if (loading)

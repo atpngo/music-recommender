@@ -37,7 +37,7 @@ function Test()
 
     const debug = () => 
     {
-        console.log("hey");
+        
     }
 
     const HeartButton = (props) => 
