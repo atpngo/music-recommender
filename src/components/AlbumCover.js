@@ -10,7 +10,7 @@ function AlbumCover(props)
     {
         return(
             <div>
-                <Avatar component={Paper} elevation={2} variant="square" sx={{width: '15vw', height: '15vw', margin: '20px', marginTop: '0px'}} src={props.image} imgProps={{draggable: false}}/>
+                <Avatar component={Paper} elevation={2} variant="square" sx={{width: 'max(20vw, 100px)', height: 'max(20vw, 100px)', margin: 'min(10px, 2vw)', marginTop: '0px'}} src={props.image} imgProps={{draggable: false}}/>
             </div> 
         );
     }

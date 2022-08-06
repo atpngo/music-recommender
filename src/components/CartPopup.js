@@ -205,24 +205,24 @@ function CartPopup(props)
         <Dialog open={props.open} onClose={props.onClose} maxWidth='xl' TransitionComponent={Transition} keepMounted PaperProps={{style: {borderRadius: 20, backgroundColor: '#E28BBA'}}}>
                 {/* <button onClick={debug}>Debug</button> */}
 
-                <div style={{width: '75vw', height: '75vh', display: 'flex', padding: '30px', justifyContent: "center"}}>
+                <div style={{width: '75vw', height: '75vh', display: 'flex', padding: 'max(1vw, 10px)', justifyContent: "center"}}>
                     <Stack direction="column" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
                         {/* contains songs */}
-                        <Paper elevation={10} sx={{backgroundColor: 'rgb(255,255,255,0.25)', height: '90%', width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden', alignContent: 'flex-start', padding: '30px', paddingLeft: '0px', paddingRight: '0px', borderRadius: '20px'}}>
-                        <Paper elevation={0} sx={{backgroundColor: 'rgb(255,255,255,0)', height: '90%', width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflow: 'auto', alignContent: 'flex-start', justifyContent: 'center', padding: '30px', borderRadius: '20px'}}>
-                            {props.songs.map((song) => {
-                                // return 
-                                // need to make something that looks like this:
-                                // <Avatar> <RemoveBtn/> </Avatar>
-                                // remove btn passed as a child component and used to remove the song from the list
-                                return <AlbumCover image={song.image}>
-                                    {/* button here later */}
-                                </AlbumCover>
-                            })}
-                        </Paper>
+                        <Paper elevation={10} sx={{backgroundColor: 'rgb(255,255,255,0.25)', height: '90%', width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden', alignContent: 'flex-start', borderRadius: '20px', paddingTop: 'max(1vw, 10px)'}}>
+                            <div style={{backgroundColor: 'rgb(255,255,255,0)', height: '90%', width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflow: 'auto', alignContent: 'flex-start', justifyContent: 'center', padding: 'min(30px, 2vw)', borderRadius: '20px'}}>
+                                {props.songs.map((song) => {
+                                    // return 
+                                    // need to make something that looks like this:
+                                    // <Avatar> <RemoveBtn/> </Avatar>
+                                    // remove btn passed as a child component and used to remove the song from the list
+                                    return <AlbumCover image={song.image}>
+                                        {/* button here later */}
+                                    </AlbumCover>
+                                })}
+                            </div>
                         </Paper>
                         {/* contains options */}
-                        <Stack direction="row" sx={{marginTop: '30px', display: 'flex', alignItems: 'center'}}>
+                        <Stack direction="row" sx={{marginTop: 'max(1vw, 10px)', display: 'flex', alignItems: 'center'}}>
                             <Autocomplete onChange={handleInputChange} disablePortal 
                             options={playlists} 
                             getOptionLabel={(option) => option.name}
