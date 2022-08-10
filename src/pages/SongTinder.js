@@ -16,7 +16,7 @@ const CartButton = (props) =>
     return(
         <div onClick={props.onClick} class="round-button">
             <div class="cart-button">
-                <a class="round-button" style={{fontSize: '2em'}}>{props.children}</a>
+                <a class="round-button"><p style={{fontSize: '1em'}}>{props.children}</p></a>
             </div>
         </div>
     );
@@ -107,6 +107,7 @@ function SongTinder()
                 .then(newres => {
                     let fetchedSongs = [...newres.data.tracks]
                     let bads = [];
+                    console.log(newres);
                     
                     if (bads.length == 0)
                     {
@@ -132,6 +133,7 @@ function SongTinder()
                             'image': input.album.images[0].url,
                             'url':input.preview_url,
                             'uri':input.uri,
+                            'spotify':input.external_urls.spotify
                         }
                     });
                     setData(formattedData);
