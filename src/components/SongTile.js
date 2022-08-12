@@ -7,9 +7,13 @@ function SongTile(props)
 {
     const song = props.data;
 
+    const goToSpotify = () =>
+    {
+        window.open(song.url);
+    }
 
     return (
-            <Stack direction="row" spacing={2} sx={{width: '100%', marginTop: '2vh', marginBottom: '1vh', marginRight: '1vw'}}>
+            <Stack onClick={goToSpotify} direction="row" spacing={2} sx={{width: '100%', marginTop: '2vh', marginBottom: '1vh', marginRight: '1vw'}}>
                     <Box width={10} display="flex" alignItems="center" justifyContent="center">
                         <p id="number">{song.index}</p>
                     </Box>

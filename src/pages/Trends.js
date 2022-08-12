@@ -90,6 +90,7 @@ function Trends()
                                 image: item.album.images[1].url,
                                 title: item.name,
                                 artists: item.artists.map((artist, key) => artist.name).join(', '),
+                                url: item.external_urls.spotify,
                                 index: key+1
                             }
                         }));
@@ -119,6 +120,7 @@ function Trends()
                                                 image: artist.images[1].url,
                                                 title: artist.name,
                                                 artists: artist.followers.total + ' Followers',
+                                                url: artist.external_urls.spotify,
                                                 index: key+1
                                             }
                                         }));

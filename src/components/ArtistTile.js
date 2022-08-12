@@ -7,8 +7,13 @@ function ArtistTile(props)
 {
     const artist = props.data;
 
+    const goToSpotify = () =>
+    {
+        window.open(artist.url);
+    }
+
     return (
-            <Stack direction="row" spacing={2} sx={{width: '100%', marginTop: '2vh', marginBottom: '1vh'}}>
+            <Stack onClick={goToSpotify} direction="row" spacing={2} sx={{width: '100%', marginTop: '2vh', marginBottom: '1vh'}}>
                     <Box width={10} display="flex" alignItems="center" justifyContent="center">
                         <p id="number">{artist.index}</p>
                     </Box>
