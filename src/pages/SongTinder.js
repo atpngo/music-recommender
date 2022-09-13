@@ -9,14 +9,17 @@ import Loading from "../components/Loading";
 import '../style/RoundButton.css';
 import x from '../media/x.png';
 import heart from '../media/heart.png';
+import useWindowDimensions from "../util/Window";
 
 
 const CartButton = (props) =>
 {
+    const {width, height} = useWindowDimensions();
+
     return(
         <div onClick={props.onClick} class="round-button">
             <div class="cart-button">
-                <a class="round-button"><p style={{fontSize: '1em'}}>{props.children}</p></a>
+                <a class="round-button"><p style={{fontSize: (height > width ? '2.5em' : '1.5em')}}>{props.children}</p></a>
             </div>
         </div>
     );
@@ -237,7 +240,6 @@ function SongTinder()
                         </CartButton>
                         <Spacer space="2vw"/>
 
-                        {/* <YesButton aria-label="yes" sx={{backgroundColor: '#72AF5C', color: 'white', width: '125px', height: '125px'}}> */}
                         <HeartButton onClick={likeCurrentSong}/>
 
                     </Stack>
@@ -249,11 +251,3 @@ function SongTinder()
 }
 
 export default SongTinder;
-
-// flow ->
-// users authenticate first thign
-// select what they wanna do (visualize their stats or whatever, OR make a playlist)
-// make a playlist title and description 
-// either: generate a new playlist or listen and create their own
-// if latter, start adding songs based on their CURRENT top 5 songs, generate 100 for them to go through
-// if they find 5 they like, use those to generate more

@@ -43,27 +43,38 @@ function Trends()
 
 
     useEffect(() => {
-        // listening history bugfix
+        // get each possible "top" data from spotify
         axios.all(terms.map(term => spotify.get('me/top/tracks?time_range=' + term + '&limit=50')))
         .then(res => {
-            for (let i=0; i<3; i++)
+            let localTerm;
+            for (let i=2; i>=0; i--)
             {
+                // if any of them have a value greater than 0, it means data exists and can be used
                 if (res[i].data.items.length > 0)
                 {
                     switch (i)
                     {
                         case 0:
                             setShort(true);
+                            localTerm = 'short_term';
                             break;
                         case 1:
                             setMedium(true);
+                            localTerm = 'medium_term';
                             break;
                         case 2:
                             setLong(true);
+                            localTerm = 'long_term';
+                            break;
+                        default:
+                            setLong(true);
+                            localTerm = 'long_term';
                             break;
                     }
                 }
             }
+            // use most recent term
+            setTerm(localTerm);
 
 
 
@@ -79,9 +90,14 @@ function Trends()
                 else
                     localStorage.setItem("userImage", 'https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg');
                 localStorage.setItem("userName", res.data.display_name);
+
+                if (height > width)
+                {
+                    navigate('/songs')
+                }
             
             
-                spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
+                spotify.get('me/top/tracks?time_range=' + localTerm + '&limit=50')
                 .then(
                     res => {
                         
@@ -167,6 +183,9 @@ function Trends()
             case 'long':
                 setTerm('long_term');
                 break;
+            default:
+                setTerm('long_term');
+                break;
         }
     }
 
@@ -194,6 +213,7 @@ function Trends()
 
     if (width < height)
     {
+
         return (
             <div style={{height: '80vh', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
                 <p>Mobile Version is a Work in Progress!</p>
