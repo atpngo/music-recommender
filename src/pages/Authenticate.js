@@ -136,11 +136,6 @@ function Authenticate()
                     <Paper elevation={10} sx={{width: '80%', height: '30%',backgroundColor: 'rgb(255,255,255,0.25)', padding: '15px 15px 12px 15px', borderRadius: '10px'}}>
                     <video width='100%' muted autoPlay={"autoplay"} preLoad="auto" loop src={demo}/>
                     </Paper>
-                    <p style={{marginTop: '10%', fontSize: '1em', color: 'white', fontWeight: 'bold', textAlign: 'center'}}>
-                    Made by <a style={{color: 'white', textDecoration: 'none'}} target="_blank" href="https://github.com/atpngo">Andy Ngo</a>
-                    <br/>
-                    Powered by Spotify Web API
-                    </p>
                 </Stack>
             </div>
         );
@@ -168,11 +163,7 @@ function Authenticate()
                 </Paper>
                 
             </Stack>
-            <p style={{marginTop: '10%', fontSize: '1.5vw', color: 'white', fontWeight: 'bold', textAlign: 'center'}}>
-                Made by <a style={{color: 'white', textDecoration: 'none'}} target="_blank" href="https://github.com/atpngo">Andy Ngo</a>
-                <br/>
-                Powered by Spotify Web API
-            </p>
+
             </Stack>
         </div>
     );
