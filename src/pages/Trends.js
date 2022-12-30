@@ -46,35 +46,35 @@ function Trends()
         // get each possible "top" data from spotify
         axios.all(terms.map(term => spotify.get('me/top/tracks?time_range=' + term + '&limit=50')))
         .then(res => {
-            let localTerm;
-            for (let i=2; i>=0; i--)
+        let localTerm;
+        for (let i=2; i>=0; i--)
+        {
+            // if any of them have a value greater than 0, it means data exists and can be used
+            if (res[i].data.items.length > 0)
             {
-                // if any of them have a value greater than 0, it means data exists and can be used
-                if (res[i].data.items.length > 0)
+                switch (i)
                 {
-                    switch (i)
-                    {
-                        case 0:
-                            setShort(true);
-                            localTerm = 'short_term';
-                            break;
-                        case 1:
-                            setMedium(true);
-                            localTerm = 'medium_term';
-                            break;
-                        case 2:
-                            setLong(true);
-                            localTerm = 'long_term';
-                            break;
-                        default:
-                            setLong(true);
-                            localTerm = 'long_term';
-                            break;
-                    }
+                    case 0:
+                        setShort(true);
+                        localTerm = 'short_term';
+                        break;
+                    case 1:
+                        setMedium(true);
+                        localTerm = 'medium_term';
+                        break;
+                    case 2:
+                        setLong(true);
+                        localTerm = 'long_term';
+                        break;
+                    default:
+                        setLong(true);
+                        localTerm = 'long_term';
+                        break;
                 }
             }
-            // use most recent term
-            setTerm(localTerm);
+        }
+        // use most recent term
+        // setTerm(localTerm);
 
 
 
@@ -97,7 +97,7 @@ function Trends()
                 }
             
             
-                spotify.get('me/top/tracks?time_range=' + localTerm + '&limit=50')
+                spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
                 .then(
                     res => {
                         
