@@ -97,7 +97,7 @@ function Authenticate()
             localStorage.setItem("expiresIn", expiresIn);
             localStorage.setItem("tokenType", tokenType);
             window.location.hash = "";
-            navigate('/trends');
+            navigate('/main');
         }
     }, []);
 

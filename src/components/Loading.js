@@ -5,7 +5,7 @@ import trackImg from '../media/track.png';
 function Loading()
 {
     return(
-        <div class="loader-container">
+        <div class="loader-container bg-pink-400">
             <img class="spinner" src={trackImg}></img>
         </div>
     )

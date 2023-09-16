@@ -3,6 +3,7 @@ import Authenticate from "./pages/Authenticate";
 import SongTinder from "./pages/SongTinder";
 import Test from "./pages/Test";
 import Trends from "./pages/Trends";
+import Main from "./pages/Main";
 import NavBar from "./components/NavBar";
 import Error from "./pages/Error";
 import PrivateRoute from "./util/PrivateRoute";
@@ -30,6 +31,9 @@ function App() {
           <Route path="/test" element={<Test/>}/>
           <Route path="/trends" element={<PrivateRoute/>}>
             <Route path="/trends" element={<Trends/>}/>
+          </Route>
+          <Route path="/main" element={<PrivateRoute/>}>
+            <Route path="/main" element={<Main/>}/>
           </Route>
           <Route path="*" element={<Error/>}/>
         </Routes>
