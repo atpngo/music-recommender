@@ -42,12 +42,12 @@ function Main()
     const navigate = useNavigate();
     const [open, setOpen] = useState(false)
     const [selected, setSelected] = useState("month")
-    const options = ["month", "half year", "all time history"];
+    const options = ["month", "half year", "all time"];
 
     const translator = {
         "month": "short_term",
         "half year": "medium_term",
-        "all time history": "long_term",
+        "all time": "long_term",
     }
 
     const spotify = axios.create({
@@ -258,25 +258,28 @@ function Main()
             {/* Intro */}
             <div className={`bg-gradient-to-b from-[#F5CFCF] to-[#F5CFCF] from-10% to-90% z-1000 h-screen flex flex-col items-center`}>
                 <div className="flex lg:flex-row flex-col items-center pt-[100px] lg:pt-0 gap gap-[60px] lg:justify-center h-full p-4 lg:gap-[120px] lg:max-w-[1600px]">
-                        <div className="flex flex-col lg:py-[100px] lg:gap-3 order-last lg:order-first">
-                            <p className="font-main font-bold lg:text-[50px] text-[30px] leading-[30px] pb-[10px]">Howdy, {localStorage.getItem("userName")}!</p>
+                        <div className="flex flex-col lg:py-[100px] lg:gap-12 order-last lg:order-first">
+                            <div className="flex flex-col">
+                                <p className="font-main font-bold lg:text-[75px] text-[30px] lg:leading-[100px] leading-[30px] pb-[10px]">Howdy,</p>
+                                <p className="font-main font-bold lg:text-[75px] text-[30px] leading-[30px] pb-[10px]">{localStorage.getItem("userName")}!</p>
+                            </div>
                             <div className="flex flex-col lg:gap-4 pt-[10px]">
                                 <p className="font-alt lg:text-[25px] text-[22px] lg:leading-[10px]">Let's take a look at your listening</p>
                                 <div className="flex lg:gap-4 gap-2 items-center">
                                     <p className="font-alt lg:text-[25px] text-[22px]">history in the past: </p>
                                         {/* dropdown */}
                                         <div className="relative inline-block text-left">
-                                            <div>
+                                            <div className="flex">
                                                 <button 
                                                     type="button" 
-                                                    className="flex lg:text-[22px] text-[20px] w-[220px] justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" 
+                                                    className="flex items-center lg:text-[22px] text-[18px] w-[140px] lg:w-[180px] justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" 
                                                     id="menu-button" 
                                                     aria-expanded="true" 
                                                     aria-haspopup="true"
                                                     onClick={() => {setOpen(!open)}}
                                                 >
                                                 {selected}
-                                                <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <svg className="-mr-1 h-8 w-8 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                                                 </svg>
                                                 </button>
@@ -310,7 +313,7 @@ function Main()
                         </div>
                         <img 
                             src={localStorage.getItem("userImage")}
-                            className="rounded-full w-[260px] h-[260px] object-cover shadow-xl order-first lg:order-last"
+                            className="rounded-full lg:w-[400px] lg:h-[400px] w-[260px] h-[260px] object-cover shadow-xl order-first lg:order-last"
                         />
                 </div>
             </div>

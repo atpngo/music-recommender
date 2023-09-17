@@ -18,7 +18,7 @@ function NavBar()
 
   const goToTrends = () =>
   {
-    navigate('/trends');
+    navigate('/main');
     window.location.reload();
 
   }
@@ -43,7 +43,7 @@ function NavBar()
   }
 
   return (
-    <AppBar position="static" sx={{backgroundColor: '#EF429F', height: '3.25em', display: 'flex', justifyContent: 'center'}}>
+    <AppBar position="absolute" sx={{backgroundColor: '#EF429F', height: '3.25em', display: 'flex', justifyContent: 'center'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 
