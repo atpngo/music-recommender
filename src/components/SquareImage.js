@@ -27,7 +27,7 @@ export default function SquareImage({src, size, color, number, box, fontSize})
             style={{
                 boxShadow: `${box} ${box} ${color}`,
                 width: `${size}`,
-                height: `${size}`,
+                maxHeight: `${size}`
             }}/> 
         </div>
     )

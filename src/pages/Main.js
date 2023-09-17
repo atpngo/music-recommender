@@ -11,7 +11,7 @@ import Podium from "../components/Podium";
 import SongSlab from "../components/SongSlab";
 import AdventureSection from "../components/AdventureSection";
 import ReactApexChart from "react-apexcharts";
-
+import { motion, AnimatePresence } from "framer-motion"
 
 
 function Main()
@@ -26,11 +26,12 @@ function Main()
         'energy': {'id': null, 'value': 0,'average': 0},
         'valence': {'id': null, 'value': 0, 'average': 0}
     })
+    const [latestSong, setLatestSong] = useState(null);
     const [topGenres, setTopGenres] = useState([])
     const [genres, setGenres] = useState({})
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(true);
-    const [term, setTerm] = useState('short_term');
+    const [term, setTerm] = useState('long_term');
     const [songs, setSongs] = useState(null);
     const [artists, setArtists] = useState(null);
     const {width, height} = useWindowDimensions();
@@ -39,6 +40,15 @@ function Main()
     const [longWorks, setLong] = useState(false);
     const [id2SongMap, setID2SongMap] = useState({});
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false)
+    const [selected, setSelected] = useState("month")
+    const options = ["month", "half year", "all time history"];
+
+    const translator = {
+        "month": "short_term",
+        "half year": "medium_term",
+        "all time history": "long_term",
+    }
 
     const spotify = axios.create({
         baseURL: 'https://api.spotify.com/v1/',
@@ -200,8 +210,18 @@ function Main()
                                         const genreList = Object.entries(genreSet).sort((a,b) => {return b[1] - a[1] })
                                         setTopGenres(genreList)
                                         setGenres(genreSet)
+                                        let topArtist = res.data.items[0]
+
+                                        // get top artist's latest track
+                                        spotify.get('artists/' + topArtist.id + '/albums?include_groups=single,appears_on&offset=0&limit=1&market=US&locale=en-US,en;q=0.9')
+                                        .then(res => 
+                                            {
+                                                setLatestSong(res.data.items[0].id)
+                                                setLoading(false);
+
+                                            }
+                                        )
                                         
-                                        setLoading(false);
 
                                     }
                                 )
@@ -239,14 +259,52 @@ function Main()
             <div className={`bg-gradient-to-b from-[#F5CFCF] to-[#F5CFCF] from-10% to-90% z-1000 h-screen flex flex-col items-center`}>
                 <div className="flex lg:flex-row flex-col items-center pt-[100px] lg:pt-0 gap gap-[60px] lg:justify-center h-full p-4 lg:gap-[120px] lg:max-w-[1600px]">
                         <div className="flex flex-col lg:py-[100px] lg:gap-3 order-last lg:order-first">
-                            <p className="font-main font-bold lg:text-[50px] text-[30px] leading-[30px] pb-[10px]">{getRandom(["Hey there", "Howdy", "Looking good", "Nice to see you"])}, {localStorage.getItem("userName")}!</p>
+                            <p className="font-main font-bold lg:text-[50px] text-[30px] leading-[30px] pb-[10px]">Howdy, {localStorage.getItem("userName")}!</p>
                             <div className="flex flex-col lg:gap-4 pt-[10px]">
                                 <p className="font-alt lg:text-[25px] text-[22px] lg:leading-[10px]">Let's take a look at your listening</p>
                                 <div className="flex lg:gap-4 gap-2 items-center">
                                     <p className="font-alt lg:text-[25px] text-[22px]">history in the past: </p>
-                                    <div className="lg:w-[200px] lg:h-[45px] lg:text-[25px] w-[130px] h-[30px] bg-[#EF429F] rounded-md flex items-center p-2 text-white font-alt text-[22px]">
-                                        30 days
-                                    </div>
+                                        {/* dropdown */}
+                                        <div className="relative inline-block text-left">
+                                            <div>
+                                                <button 
+                                                    type="button" 
+                                                    className="flex lg:text-[22px] text-[20px] w-[220px] justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" 
+                                                    id="menu-button" 
+                                                    aria-expanded="true" 
+                                                    aria-haspopup="true"
+                                                    onClick={() => {setOpen(!open)}}
+                                                >
+                                                {selected}
+                                                <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                                </svg>
+                                                </button>
+                                            </div>
+
+
+                                            <AnimatePresence>
+                                                {open && <motion.div
+                                                    // initial={{opacity: 0}}
+                                                    // animate={{opacity: 1}}
+                                                    // exit={{opacity: 0}}
+                                                    initial={{scale: 0}}
+                                                    animate={{scale: 1}}
+                                                    exit={{scale: 0}}
+                                                    className="absolute right-0 z-10 mt-2 w-[175px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                                    role="menu"
+                                                    aria-orientation="vertical"
+                                                    aria-labelledby="menu-button"
+                                                    tabindex="-1"
+                                                >
+                                                    <div className="py-1" role="none">
+                                                        {options.map((option, idx) => {
+                                                            return <a className="text-gray-700 block px-4 py-2 text-sm hover:bg-pink-50 cursor-pointer" key={idx} onClick={() => {setSelected(option); setOpen(false); setTerm(translator[option])}}>{option}</a>
+                                                        })}
+                                                    </div>
+                                                </motion.div>}
+                                            </AnimatePresence>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -290,10 +348,10 @@ function Main()
                                 />
                             </div>
                             <div className="flex flex-col gap-4">
-                                <p className="font-alt lg:text-[20px] text-[14px]">Did you get a chance to listen to their latest song yet?</p>
+                                <p className="font-alt lg:text-[20px] text-[14px]">Did you get a chance to listen to their latest hits yet?</p>
                                 <iframe 
                                     style={{borderRadius: "12px"}}
-                                    src="https://open.spotify.com/embed/track/5Y4L2jaSYxvPlhz6T8HRAl?utm_source=generator" 
+                                    src={`https://open.spotify.com/embed/album/${latestSong}?utm_source=generator`}
                                     width="100%" 
                                     height="200" 
                                     frameBorder="0" 
@@ -367,7 +425,7 @@ function Main()
                             <div className="lg:flex hidden">
                                 <SquareImage
                                     src={songs[0].image}
-                                    size="350px"
+                                    size="500px"
                                     color="#286CBA"
                                     box="20px"
                                     fontSize="30px"
@@ -479,7 +537,8 @@ function Main()
                             <div>
                                 <AdventureSection
                                     alignment={"start"}
-                                    title={(categorySongs["valence"]["average"] < 0.33) ? "sad bean" : (categorySongs["valence"]["average"] < 0.66) ? "if you're happy and you know it clap your hands" : "all sunshine and rainbows here"}
+                                    // title={(categorySongs["valence"]["average"] < 0.33) ? "sad bean" : (categorySongs["valence"]["average"] < 0.66) ? "if you're happy and you know it clap your hands" : "all sunshine and rainbows here"}
+                                    title={"happiness"}
                                     description={"on average, your songs have a happiness level of"}
                                     value={categorySongs["valence"]["average"]}
                                     heading={"your go to mood booster was"}
@@ -493,7 +552,8 @@ function Main()
                             <div>
                                 <AdventureSection
                                     alignment={"center"}
-                                    title={(categorySongs["energy"]["average"] < 0.33) ? "stay mellow my fellow" : (categorySongs["energy"]["average"] < 0.66) ? "LETS GO!" : "GET HYPE!"}
+                                    // title={(categorySongs["energy"]["average"] < 0.33) ? "stay mellow my fellow" : (categorySongs["energy"]["average"] < 0.66) ? "LETS GO!" : "GET HYPE!"}
+                                    title={"energy"}
                                     description={"on average, your songs have an energy level of"}
                                     value={categorySongs["energy"]["average"]}
                                     heading={"your go to hype song was"}
@@ -507,10 +567,11 @@ function Main()
                             <div>
                                 <AdventureSection
                                     alignment={"end"}
-                                    title={(categorySongs["danceability"]["average"] < 0.33) ? "dance! but only sometimes" : (categorySongs["danceability"]["average"] < 0.66) ? "dance like nobody's watching!" : "get groovy!"}
+                                    title={"danceability"}
+                                    // title={(categorySongs["danceability"]["average"] < 0.33) ? "dance! but only sometimes" : (categorySongs["danceability"]["average"] < 0.66) ? "dance like nobody's watching!" : "get groovy!"}
                                     description={"on average, your songs have a danceability level of"}
                                     value={categorySongs["danceability"]["average"]}
-                                    heading={"nothing gets you moving like"}
+                                    heading={"nothing gets you dancing like"}
                                     mainSong={id2SongMap[categorySongs["danceability"]["id"]]}
                                     subSongs={songs.slice(6, 10)}
                                     color={"#3E78E9"}
