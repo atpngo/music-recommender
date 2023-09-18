@@ -121,7 +121,7 @@ function Authenticate()
     if (width < height)
     {
         return(
-            <div style={{display: 'flex', height: '100vh',alignItems: 'center', justifyContent: 'center'}}>
+            <div className="bg-pink-400" style={{display: 'flex', height: '100vh',alignItems: 'center', justifyContent: 'center'}}>
                 <Stack direction="column" style={{display: 'flex', alignItems: 'center'}}>
                     <img draggable="false" width="90%" src={logo}/>
                     <div style={{marginTop: '2vh'}}/>
@@ -142,7 +142,7 @@ function Authenticate()
     }
 
     return(
-        <div style={{display: 'flex', height: '100vh',alignItems: 'center', justifyContent: 'center'}}>
+        <div className="bg-pink-400" style={{display: 'flex', height: '100vh',alignItems: 'center', justifyContent: 'center'}}>
             <Stack direction="column" style={{display: 'flex', alignItems: 'center'}}>
             <Stack direction="row">
                 <Stack direction="column" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%'}}>

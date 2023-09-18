@@ -42,12 +42,18 @@ function Main()
     const navigate = useNavigate();
     const [open, setOpen] = useState(false)
     const [selected, setSelected] = useState("month")
-    const options = ["month", "half year", "all time"];
+    const [options, setOptions] = useState([]);
 
     const translator = {
         "month": "short_term",
         "half year": "medium_term",
         "all time": "long_term",
+    }
+
+    const reverseTranslator = {
+        "short_term": "month",
+        "medium_term": "half year",
+        "long_term": "all time",
     }
 
     const spotify = axios.create({
@@ -63,43 +69,60 @@ function Main()
 
     useEffect(() => {
         // get each possible "top" data from spotify
-        axios.all(terms.map(term => spotify.get('me/top/tracks?time_range=' + term + '&limit=50')))
+        setLoading(true)
+        axios.all(terms.map(term => spotify.get('me/top/tracks?time_range=' + term + '&limit=1')))
         .then(res => {
+            console.log(res);
         let localTerm;
         for (let i=2; i>=0; i--)
         {
             // if any of them have a value greater than 0, it means data exists and can be used
             if (res[i].data.items.length > 0)
             {
+                console.log(i);
                 switch (i)
                 {
                     case 0:
                         setShort(true);
-                        localTerm = 'short_term';
+                        setOptions(prev => {
+                            if (!prev.includes('month')) return [...prev, 'month']
+                            else return [...prev]
+                        })
                         break;
                     case 1:
                         setMedium(true);
-                        localTerm = 'medium_term';
-                        break;
-                    case 2:
-                        setLong(true);
-                        localTerm = 'long_term';
+                        setOptions(prev => {
+                            if (!prev.includes('half year')) return [...prev, 'half year']
+                            else return [...prev]
+                        })
                         break;
                     default:
                         setLong(true);
-                        localTerm = 'long_term';
+                        setOptions(prev => {
+                            if (!prev.includes('all time')) return [...prev, 'all time']
+                            else return [...prev]
+                        })
                         break;
                 }
             }
         }
         // use most recent term
-        // setTerm(localTerm);
+        localTerm = translator[selected];
+        if (!localTerm)
+        {
+            console.log("something bad happened")
+            // set some flag here to display an error
+            return
+        }
+        else
+        {
 
+        }
 
 
 
         // fetch data and then visualize 
-        if (term)
+        if (localTerm)
         {
             // get id
             spotify.get('me').then(res => {
@@ -116,7 +139,7 @@ function Main()
                 }
             
             
-                spotify.get('me/top/tracks?time_range=' + term + '&limit=50')
+                spotify.get('me/top/tracks?time_range=' + localTerm + '&limit=50')
                 .then(
                     res => {
                         setID2SongMap(prev => {
@@ -182,7 +205,7 @@ function Main()
                                     })
                                 }
                                 // get artists
-                                spotify.get('me/top/artists?time_range='+term+'&limit=50')
+                                spotify.get('me/top/artists?time_range='+localTerm+'&limit=50')
                                 .then(res => 
                                     {
                                         setArtists(res.data.items.map((artist, key) => {
@@ -587,7 +610,7 @@ function Main()
             {/* end trends section */}
 
             {/* genre section */}
-            <div className={`bg-gradient-to-b from-[#BED8F1] to-[#C8BEF1] from-0% to-90% z-1000 flex flex-col items-center pt-[100px] pb-[10px]`}>
+            <div className={`bg-gradient-to-b from-[#BED8F1] to-[#C8BEF1] from-0% to-90% z-1000 flex flex-col items-center pt-[100px] pb-[100px]`}>
                 <div className="flex flex-col items-center gap-14 lg:min-w-[900px] lg:max-w-[1600px] min-w-[300px] md:max-w-[800px] max-w-[300px]">
                     <div className="flex items-end w-full">
                         <div className="flex flex-col">

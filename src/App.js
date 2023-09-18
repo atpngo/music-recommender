@@ -4,7 +4,6 @@ import SongTinder from "./pages/SongTinder";
 import Test from "./pages/Test";
 import Trends from "./pages/Trends";
 import Main from "./pages/Main";
-import NavBar from "./components/NavBar";
 import Error from "./pages/Error";
 import PrivateRoute from "./util/PrivateRoute";
 import { useEffect } from "react";
@@ -37,7 +36,7 @@ function App() {
           </Route>
           <Route path="*" element={<Error/>}/>
         </Routes>
-      </Router>
+      </Router> 
     </div>
   );
 }
