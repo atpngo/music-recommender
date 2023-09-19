@@ -1,7 +1,7 @@
 // This is redesigned Trends page
 
 import SquareImage from "../components/SquareImage";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import useWindowDimensions from "../util/Window";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,8 @@ import Podium from "../components/Podium";
 import SongSlab from "../components/SongSlab";
 import AdventureSection from "../components/AdventureSection";
 import ReactApexChart from "react-apexcharts";
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useInView } from "framer-motion"
+import AnimationReveal from "../components/AnimationReveal";
 
 
 function Main()
@@ -43,6 +44,9 @@ function Main()
     const [open, setOpen] = useState(false)
     const [selected, setSelected] = useState("month")
     const [options, setOptions] = useState([]);
+    const [valence, setValence] = useState([]);
+    const [danceability, setDanceability] = useState([]);
+    const [energy, setEnergy] = useState([]);
 
     const translator = {
         "month": "short_term",
@@ -66,6 +70,11 @@ function Main()
 
     const terms = ['short_term', 'medium_term', 'long_term'];
 
+    // animations
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true })
+
+    const [setInView, inView] = useState(false)
 
     useEffect(() => {
         // get each possible "top" data from spotify
@@ -204,6 +213,30 @@ function Main()
                                         return t;
                                     })
                                 }
+
+                                // sort songs by valence 
+                                let copy = [...res.data.audio_features];
+                                let sortedValence = copy.sort((a, b) => {
+                                    if (a["valence"] > b["valence"]) return -1
+                                    if (a["valence"] < b["valence"]) return 1
+                                    return 0
+                                })
+                                copy = [...res.data.audio_features];
+                                let sortedEnergy = copy.sort((a, b) => {
+                                    if (a["energy"] > b["energy"]) return -1
+                                    if (a["energy"] < b["energy"]) return 1
+                                    return 0
+                                })
+                                copy = [...res.data.audio_features];
+                                let sortedDanceability = copy.sort((a, b) => {
+                                    if (a["danceability"] > b["danceability"]) return -1
+                                    if (a["danceability"] < b["danceability"]) return 1
+                                    return 0
+                                })
+                                setValence(sortedValence)
+                                setDanceability(sortedDanceability)
+                                setEnergy(sortedEnergy)
+
                                 // get artists
                                 spotify.get('me/top/artists?time_range='+localTerm+'&limit=50')
                                 .then(res => 
@@ -265,29 +298,35 @@ function Main()
     if (loading)
     {
         return (
-            <div>
-                <Loading/>
-            </div>
+            <AnimatePresence>
+                <motion.div>
+                    <Loading/>
+                </motion.div>
+            </AnimatePresence>
         )
     }
 
     return (
         <div className="flex flex-col">
-            {/* General Format 
-                - Section
-                    - each section contains a background of three colors (start, main, end) to control the linear gradient            
-            */}
-            {/* <button className="border-4 bg-pink-400 w-[400px] h-[400px] text-black" onClick={() => console.log(categorySongs)}>DEBUG BUTTON</button> */}
             {/* Intro */}
-            <div className={`bg-gradient-to-b from-[#F5CFCF] to-[#F5CFCF] from-10% to-90% z-1000 h-screen flex flex-col items-center`}>
-                <div className="flex lg:flex-row flex-col items-center pt-[100px] lg:pt-0 gap gap-[60px] lg:justify-center h-full p-4 lg:gap-[120px] lg:max-w-[1600px]">
+            <motion.div ref={ref} className={`bg-gradient-to-b from-[#F5CFCF] to-[#F5CFCF] from-10% to-90% z-1000 h-screen flex flex-col items-center`} >
+                <motion.div 
+                    className="flex lg:flex-row flex-col items-center pt-[100px] lg:pt-0 gap gap-[60px] lg:justify-center h-full p-4 lg:gap-[120px] lg:max-w-[1600px]"
+                    variants={{
+                        hidden: {opacity: 0, y: 75},
+                        visible: {opacity: 1, y: 0}
+                    }}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ duration: 0.5, delay: 0.25 }}
+                >
                         <div className="flex flex-col lg:py-[100px] lg:gap-12 order-last lg:order-first">
                             <div className="flex flex-col">
                                 <p className="font-main font-bold lg:text-[75px] text-[30px] lg:leading-[100px] leading-[30px] pb-[10px]">Howdy,</p>
                                 <p className="font-main font-bold lg:text-[75px] text-[30px] leading-[30px] pb-[10px]">{localStorage.getItem("userName")}!</p>
                             </div>
                             <div className="flex flex-col lg:gap-4 pt-[10px]">
-                                <p className="font-alt lg:text-[25px] text-[22px] lg:leading-[10px]">Let's take a look at your listening</p>
+                                <p className="font-alt lg:text-[25px] text-[22px] lg:leading-[10px]">Let's take a look at your listening </p>
                                 <div className="flex lg:gap-4 gap-2 items-center">
                                     <p className="font-alt lg:text-[25px] text-[22px]">history in the past: </p>
                                         {/* dropdown */}
@@ -338,86 +377,95 @@ function Main()
                             src={localStorage.getItem("userImage")}
                             className="rounded-full lg:w-[400px] lg:h-[400px] w-[260px] h-[260px] object-cover shadow-xl order-first lg:order-last"
                         />
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
 
             {/* Top Artists */}
             <div className={`bg-gradient-to-b from-[#F5CFCF] to-[#F1E3BE] from-0% to-90% z-1000 flex flex-col items-center`}>
                 <div className="flex flex-col items-center gap-14 lg:min-w-[900px] lg:max-w-[1600px] min-w-[300px] md:max-w-[800px] max-w-[300px]">
                     <div className="flex items-end w-full">
-                        <div className="flex flex-col">
-                            <p className="font-main font-bold text-[#B13812] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">introducing your dream team!</p>
-                            <p className="font-main lg:text-[25px] text-[14px]">Here are some artists that you just couldn't stop listening to</p>
-                        </div>
+                        <AnimationReveal>
+                            <div className="flex flex-col">
+                                <p className="font-main font-bold text-[#B13812] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">introducing your dream team!</p>
+                                <p className="font-main lg:text-[25px] text-[14px]">Here are some artists that you just couldn't stop listening to</p>
+                            </div>
+                        </AnimationReveal>
                     </div>
 
                     {/* big numero uno */}
-                    <div className="flex lg:flex-row flex-col lg:gap-[100px] md:gap-[100px] items-start w-full justify-center"
-                        // style={{
-                        //     gap: `${width/100}px`
-                        // }}
-                    >
-                        <div className="flex flex-col lg:max-w-[650px] lg:min-w-[200px] gap-11">
-                            <div className="flex flex-col lg:gap-4 gap-4">
-                                <p className="font-alt lg:text-[18px] text-[12px]">Seems like you're a pretty big fan of</p>
-                                <p className="font-main font-bold lg:text-[100px] lg:leading-[90px] text-[60px] leading-[50px] text-[#286CBA]">{artists[0].title}</p>
-                                <p className="font-alt lg:text-[30px]">They're your <b>#1</b> most listened to artist based on your listening history!</p>
+                    <AnimationReveal>
+                        <div className="flex lg:flex-row flex-col lg:gap-[100px] md:gap-[100px] items-start w-full justify-center"
+                            // style={{
+                            //     gap: `${width/100}px`
+                            // }}
+                        >
+                            <div className="flex flex-col lg:max-w-[650px] lg:min-w-[200px] gap-11">
+                                <AnimationReveal left>
+                                    <div className="flex flex-col lg:gap-4 gap-4">
+                                        <p className="font-alt lg:text-[18px] text-[12px]">Seems like you're a pretty big fan of</p>
+                                        <p className="font-main font-bold lg:text-[100px] lg:leading-[90px] text-[60px] leading-[50px] text-[#286CBA]">{artists[0].title}</p>
+                                        <p className="font-alt lg:text-[30px]">They're your <b>#1</b> most listened to artist based on your listening history!</p>
+                                    </div>
+                                </AnimationReveal>
+                                <AnimationReveal>
+                                    <div className="lg:hidden flex justify-center">
+                                        <SquareImage
+                                            src={artists[0].image}
+                                            size="300px"
+                                            color="#286CBA"
+                                            box="12px"
+                                            fontSize="20px"
+                                            number="1"
+                                        />
+                                    </div>
+                                </AnimationReveal>
+                                <div className="flex flex-col gap-4">
+                                    <p className="font-alt lg:text-[20px] text-[14px]">Did you get a chance to listen to their latest hits yet?</p>
+                                    <iframe
+                                        style={{borderRadius: "12px"}}
+                                        src={`https://open.spotify.com/embed/album/${latestSong}?utm_source=generator`}
+                                        width="100%"
+                                        height="200"
+                                        frameBorder="0"
+                                        allowfullscreen=""
+                                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                        loading="lazy"/>
+                                </div>
                             </div>
-                            <div className="lg:hidden flex justify-center">
+                            <div className="lg:flex hidden">
                                 <SquareImage
                                     src={artists[0].image}
-                                    size="300px"
+                                    size={(width < 1350) ? ((width < 1050) ? "250px" : "300px") : "450px"}
                                     color="#286CBA"
-                                    box="12px"
-                                    fontSize="20px"
+                                    box="20px"
+                                    fontSize="30px"
                                     number="1"
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
-                                <p className="font-alt lg:text-[20px] text-[14px]">Did you get a chance to listen to their latest hits yet?</p>
-                                <iframe 
-                                    style={{borderRadius: "12px"}}
-                                    src={`https://open.spotify.com/embed/album/${latestSong}?utm_source=generator`}
-                                    width="100%" 
-                                    height="200" 
-                                    frameBorder="0" 
-                                    allowfullscreen="" 
-                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-                                    loading="lazy"/>
-                            </div>
-
                         </div>
-                        <div className="lg:flex hidden">
-                            <SquareImage
-                                src={artists[0].image}
-                                size={(width < 1350) ? ((width < 1050) ? "250px" : "300px") : "450px"}
-                                color="#286CBA"
-                                box="20px"
-                                fontSize="30px"
-                                number="1"
-                            />
-                        </div>
-                    </div>
+                    </AnimationReveal>
                     {/* other artists */}
-                    <div className="flex lg:flex-row flex-col gap-4 lg:gap-20">
-                        {artists && artists.slice(1, 5).map((artist, idx) => {
-                            // get 2-5
-                                return (
-                                    <div className="flex flex-col gap-4 items-center">
-                                        <SquareImage
-                                            key={idx}
-                                            src={artist.image}
-                                            size="212px"
-                                            color="#286CBA"
-                                            box="10px"
-                                            fontSize="20px"
-                                            number={idx+2}
-                                        />
-                                        <p className="font-alt font-bold">{artist.title}</p>
-                                    </div>
-                                )
-                        })}
-                    </div>
+                    <AnimationReveal>
+                        <div className="flex lg:flex-row flex-col gap-4 lg:gap-20">
+                            {artists && artists.slice(1, 5).map((artist, idx) => {
+                                // get 2-5
+                                    return (
+                                        <div className="flex flex-col gap-4 items-center">
+                                            <SquareImage
+                                                key={idx}
+                                                src={artist.image}
+                                                size="212px"
+                                                color="#286CBA"
+                                                box="10px"
+                                                fontSize="20px"
+                                                number={idx+2}
+                                            />
+                                            <p className="font-alt font-bold">{artist.title}</p>
+                                        </div>
+                                    )
+                            })}
+                        </div>
+                    </AnimationReveal>
 
                     {/* TODO: add playlists */}
 
@@ -427,16 +475,20 @@ function Main()
             <div className={`bg-gradient-to-b from-[#F1E3BE] to-[#BEF1DF] from-10% to-90% z-1000 flex flex-col items-center pt-[200px]`}>
                 <div className="flex flex-col items-center gap-14 lg:min-w-[900px] lg:max-w-[1600px] min-w-[300px] md:max-w-[800px] max-w-[300px]"> 
                     <div className="flex items-start w-full">
-                        <div className="flex flex-col">
-                            <p className="font-main font-bold text-[#0B9F2C] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">your musical hall of fame</p>
-                        </div>
+                        <AnimationReveal left>
+                            <div className="flex flex-col">
+                                <p className="font-main font-bold text-[#0B9F2C] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">your musical hall of fame</p>
+                            </div>
+                        </AnimationReveal>
                     </div>
                     <div className="flex lg:flex-row flex-col items-center lg:gap-16 gap-8">
-                        <div className="flex flex-col lg:leading-[90px] max-w-[650px] w-full">
-                            <p className="font-main lg:text-[25px] text-[12px]">The song you had stuck on repeat was</p>
-                            <p className="font-main font-bold lg:text-[100px] text-[30px] text-[#286CBA]">{songs[0].title}</p>
-                            <p className="font-main font-bold lg:text-[50px] text-[15px] text-[#80BBFF] lg:leading-[50px]">{songs[0].artists}</p>
-                        </div>
+                        <AnimationReveal up>
+                            <div className="flex flex-col lg:leading-[90px] max-w-[650px] w-full">
+                                <p className="font-main lg:text-[25px] text-[12px]">The song you had stuck on repeat was</p>
+                                <p className="font-main font-bold lg:text-[100px] text-[30px] text-[#286CBA]">{songs[0].title}</p>
+                                <p className="font-main font-bold lg:text-[50px] text-[15px] text-[#80BBFF] lg:leading-[50px]">{songs[0].artists}</p>
+                            </div>
+                        </AnimationReveal>
                         <div>
                             <div className="lg:hidden">
                                 <SquareImage
@@ -461,89 +513,95 @@ function Main()
                         </div>
                     </div>
                     {/* podium BIG SCREEN */}
-                    <div className="lg:flex hidden">
-                        <div className="flex justify-end">
-                            <Podium
-                                color="#3B74B7"
-                                width="340px"
-                                height="177px"
-                                number={2}
-                            >
-                                <SongSlab
-                                    title={songs[1].title}
-                                    artist={songs[1].artists}
-                                    image={songs[1].image}
-                                    size={"80px"}
-                                />
-                            </Podium>
-                            <Podium
-                                color="#1E5390"
-                                width="340px"
-                                height="239px"
-                                number={1}
-                            >
-                                <SongSlab
-                                    title={songs[0].title}
-                                    artist={songs[0].artists}
-                                    image={songs[0].image}
-                                    size={"80px"}
-                                />
-                            </Podium>
-                            <Podium
-                                color="#3B74B7"
-                                width="340px"
-                                height="146px"
-                                number={3}
-                            >
-                                <SongSlab
-                                    title={songs[2].title}
-                                    artist={songs[2].artists}
-                                    image={songs[2].image}
-                                    size={"80px"}
-                                />
-                            </Podium>
+                    <AnimationReveal up>
+                        <div className="lg:flex hidden">
+                            <div className="flex justify-end">
+                                <Podium
+                                    color="#3B74B7"
+                                    width="340px"
+                                    height="177px"
+                                    number={2}
+                                >
+                                    <SongSlab
+                                        title={songs[1].title}
+                                        artist={songs[1].artists}
+                                        image={songs[1].image}
+                                        size={"80px"}
+                                    />
+                                </Podium>
+                                <Podium
+                                    color="#1E5390"
+                                    width="340px"
+                                    height="239px"
+                                    number={1}
+                                >
+                                    <SongSlab
+                                        title={songs[0].title}
+                                        artist={songs[0].artists}
+                                        image={songs[0].image}
+                                        size={"80px"}
+                                    />
+                                </Podium>
+                                <Podium
+                                    color="#3B74B7"
+                                    width="340px"
+                                    height="146px"
+                                    number={3}
+                                >
+                                    <SongSlab
+                                        title={songs[2].title}
+                                        artist={songs[2].artists}
+                                        image={songs[2].image}
+                                        size={"80px"}
+                                    />
+                                </Podium>
+                            </div>
                         </div>
-                    </div>
+                    </AnimationReveal>
                     {/* end podium */}
                     {/* start rest of songs big */}
-                    <div className="hidden lg:grid lg:grid-cols-4 lg:gap-[40px]">
-                        {songs.slice(3, Math.min(songs.length-1, 8) + 3).map((song, idx) => {
-                                return (
-                                    <div className="flex flex-col gap-4 items-center text-center">
-                                        <SquareImage
-                                            key={idx}
-                                            src={song.image}
-                                            size={"200px"}
-                                            color={"#286CBA"}
-                                            number={idx+1}
-                                            box={"10px"}
-                                            fontSize={"14px"}
-                                        />
-                                        <div className="flex flex-col items-center">
-                                            <p className="font-alt font-bold text-lg leading-[20px]">{song.title}</p>
-                                            <p className="font-alt text-lg">{song.artists}</p>
+                    <AnimationReveal up>
+                        <div className="hidden lg:grid lg:grid-cols-4 lg:gap-[40px]">
+                            {songs.slice(3, Math.min(songs.length-1, 8) + 3).map((song, idx) => {
+                                    return (
+                                        <div className="flex flex-col gap-4 items-center text-center">
+                                            <SquareImage
+                                                key={idx}
+                                                src={song.image}
+                                                size={"200px"}
+                                                color={"#286CBA"}
+                                                number={idx+1}
+                                                box={"10px"}
+                                                fontSize={"14px"}
+                                            />
+                                            <div className="flex flex-col items-center">
+                                                <p className="font-alt font-bold text-lg leading-[20px]">{song.title}</p>
+                                                <p className="font-alt text-lg">{song.artists}</p>
+                                            </div>
                                         </div>
+                                    )
+                            })}
+                        </div>
+                    </AnimationReveal>
+                    {/* rest of songs small */}
+                    <AnimationReveal left>
+                        <div className="lg:hidden max-w-[500px] gap-4 flex flex-col">
+                            {songs.slice(1, 5).map((song, idx) => {
+                                return (
+                                    <div className="flex gap-4 items-center">
+                                        <p className="font-alt font-bold text-[#286CBA] text-[30px]">{idx+2}</p>
+                                        <SongSlab
+                                            title={song.title}
+                                            artist={song.artists.substring(0, Math.min(song.artists.length, 25)) + (song.artists.length > 25 ? "..." : "") }
+                                            image={song.image}
+                                            size={"90px"}
+                                            // padding={"4px"}
+                                        />
                                     </div>
                                 )
-                        })}
-                    </div>
-                    {/* rest of songs small */}
-                    <div className="lg:hidden max-w-[500px] gap-4 flex flex-col">
-                        {songs.slice(1, 5).map((song, idx) => {
-                            return (
-                                <div className="flex gap-4 items-center">
-                                    <p className="font-alt font-bold text-[#286CBA] text-[30px]">{idx+2}</p>
-                                    <SongSlab
-                                        title={song.title}
-                                        artist={song.artists.substring(0, Math.min(song.artists.length, 25)) + (song.artists.length > 25 ? "..." : "") }
-                                        image={song.image}
-                                        size={"90px"}
-                                        // padding={"4px"}
-                                    />
-                                </div>
-                            )
-                        })}
-                    </div>
+                            })}
+                        </div>
+                    </AnimationReveal>
                 </div>
             </div>
             {/* end music section */}
@@ -553,56 +611,64 @@ function Main()
                 <div className="flex flex-col items-center lg:min-w-[900px] lg:max-w-[1600px] min-w-[300px] md:max-w-[800px] max-w-[300px] pt-[200px]">
 
                 <div className="flex justify-center w-full">
-                    <div className="flex flex-col items-center">
-                        <p className="font-main font-bold text-[#155CA0] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">your audio adventures</p>
-                        <p className="font-main lg:text-[25px] text-[14px]">There's some notable patterns in the songs you like listening to</p>
-                    </div>
+                    <AnimationReveal>
+                        <div className="flex flex-col items-center">
+                            <p className="font-main font-bold text-[#155CA0] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">your audio adventures</p>
+                            <p className="font-main lg:text-[25px] text-[14px]">There's some notable patterns in the songs you like listening to</p>
+                        </div>
+                    </AnimationReveal>
                 </div>
                         <div className="flex flex-col gap-[100px] pt-[100px] pb-10">
                             {/* valence level */}
                             <div>
-                                <AdventureSection
-                                    alignment={"start"}
-                                    // title={(categorySongs["valence"]["average"] < 0.33) ? "sad bean" : (categorySongs["valence"]["average"] < 0.66) ? "if you're happy and you know it clap your hands" : "all sunshine and rainbows here"}
-                                    title={"happiness"}
-                                    description={"on average, your songs have a happiness level of"}
-                                    value={categorySongs["valence"]["average"]}
-                                    heading={"your go to mood booster was"}
-                                    mainSong={id2SongMap[categorySongs["valence"]["id"]]}
-                                    subSongs={songs.slice(6, 10)}
-                                    color={"#1598A0"}
-                                    data={data["valence"]}
-                                />
+                                <AnimationReveal left>
+                                    <AdventureSection
+                                        alignment={"start"}
+                                        // title={(categorySongs["valence"]["average"] < 0.33) ? "sad bean" : (categorySongs["valence"]["average"] < 0.66) ? "if you're happy and you know it clap your hands" : "all sunshine and rainbows here"}
+                                        title={"happiness"}
+                                        description={"on average, your songs have a happiness level of"}
+                                        value={categorySongs["valence"]["average"]}
+                                        heading={"your go to mood booster was"}
+                                        mainSong={id2SongMap[categorySongs["valence"]["id"]]}
+                                        subSongs={valence.slice(1, 5).map((song, idx) => id2SongMap[song["id"]])}
+                                        color={"#1598A0"}
+                                        data={data["valence"]}
+                                    />
+                                </AnimationReveal>
                             </div>
                             {/* energy level */}
                             <div>
-                                <AdventureSection
-                                    alignment={"center"}
-                                    // title={(categorySongs["energy"]["average"] < 0.33) ? "stay mellow my fellow" : (categorySongs["energy"]["average"] < 0.66) ? "LETS GO!" : "GET HYPE!"}
-                                    title={"energy"}
-                                    description={"on average, your songs have an energy level of"}
-                                    value={categorySongs["energy"]["average"]}
-                                    heading={"your go to hype song was"}
-                                    mainSong={id2SongMap[categorySongs["energy"]["id"]]}
-                                    subSongs={songs.slice(6, 10)}
-                                    color={"#A80000"}
-                                    data={data["energy"]}
-                                />
+                                <AnimationReveal down>
+                                    <AdventureSection
+                                        alignment={"center"}
+                                        // title={(categorySongs["energy"]["average"] < 0.33) ? "stay mellow my fellow" : (categorySongs["energy"]["average"] < 0.66) ? "LETS GO!" : "GET HYPE!"}
+                                        title={"energy"}
+                                        description={"on average, your songs have an energy level of"}
+                                        value={categorySongs["energy"]["average"]}
+                                        heading={"your go to hype song was"}
+                                        mainSong={id2SongMap[categorySongs["energy"]["id"]]}
+                                        subSongs={energy.slice(1, 5).map((song, idx) => id2SongMap[song["id"]])}
+                                        color={"#A80000"}
+                                        data={data["energy"]}
+                                    />
+                                </AnimationReveal>
                             </div>
                             {/* danceability level */}
                             <div>
-                                <AdventureSection
-                                    alignment={"end"}
-                                    title={"danceability"}
-                                    // title={(categorySongs["danceability"]["average"] < 0.33) ? "dance! but only sometimes" : (categorySongs["danceability"]["average"] < 0.66) ? "dance like nobody's watching!" : "get groovy!"}
-                                    description={"on average, your songs have a danceability level of"}
-                                    value={categorySongs["danceability"]["average"]}
-                                    heading={"nothing gets you dancing like"}
-                                    mainSong={id2SongMap[categorySongs["danceability"]["id"]]}
-                                    subSongs={songs.slice(6, 10)}
-                                    color={"#3E78E9"}
-                                    data={data["danceability"]}
-                                />
+                                <AnimationReveal right>
+                                    <AdventureSection
+                                        alignment={"end"}
+                                        title={"danceability"}
+                                        // title={(categorySongs["danceability"]["average"] < 0.33) ? "dance! but only sometimes" : (categorySongs["danceability"]["average"] < 0.66) ? "dance like nobody's watching!" : "get groovy!"}
+                                        description={"on average, your songs have a danceability level of"}
+                                        value={categorySongs["danceability"]["average"]}
+                                        heading={"nothing gets you dancing like"}
+                                        mainSong={id2SongMap[categorySongs["danceability"]["id"]]}
+                                        subSongs={danceability.slice(1, 5).map((song, idx) => id2SongMap[song["id"]])}
+                                        color={"#3E78E9"}
+                                        data={data["danceability"]}
+                                    />
+                                </AnimationReveal>
                             </div>
                         </div>
                 </div>
@@ -613,75 +679,77 @@ function Main()
             <div className={`bg-gradient-to-b from-[#BED8F1] to-[#C8BEF1] from-0% to-90% z-1000 flex flex-col items-center pt-[100px] pb-[100px]`}>
                 <div className="flex flex-col items-center gap-14 lg:min-w-[900px] lg:max-w-[1600px] min-w-[300px] md:max-w-[800px] max-w-[300px]">
                     <div className="flex items-end w-full">
-                        <div className="flex flex-col">
-                            <p className="font-main font-bold text-[#5B15A0] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">your genre gems</p>
-                            <p className="font-main lg:text-[25px] text-[14px]">your top genres were <b className="text-[#5B15A0]">{topGenres[0][0]}</b>, <b className="text-[#5B15A0]">{topGenres[1][0]}</b>, and <b className="text-[#5B15A0]">{topGenres[2][0]}</b></p>
-                        </div>
+                        <AnimationReveal>
+                            <div className="flex flex-col">
+                                <p className="font-main font-bold text-[#5B15A0] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">your genre gems</p>
+                                <p className="font-main lg:text-[25px] text-[14px]">your top genres were <b className="text-[#5B15A0]">{topGenres[0][0]}</b>, <b className="text-[#5B15A0]">{topGenres[1][0]}</b>, and <b className="text-[#5B15A0]">{topGenres[2][0]}</b></p>
+                            </div>
+                        </AnimationReveal>
                     </div>
 
                     {/* chart */}
                     <div className="w-full">
-                        <ReactApexChart 
-                            type={"pie"}
-                            options={
-                                {
-                                    // colors: ['hsl(271, 100%, 34%)', 'hsl(271, 100%, 44%)', 'hsl(271, 100%, 54%)', 'hsl(271, 100%, 64%)', 'hsl(271, 100%, 74%)', 'hsl(271, 100%, 84%)'],
-                                    colors: topGenres.slice(0, 15).map((genre, idx) => {return `hsl(271, 100%, ${(4*idx) + 25}%)`}),
-                                    chart: {
-                                        width: "100%",
-                                        type: 'pie',
-                                    },
-                                    stroke: {
-                                        show: false
-                                    },
-                                    labels: topGenres.slice(0,15).map((genre, idx) => {return genre[0]}),
-                                    responsive: [{
-                                        breakpoint: 1050,
-                                        options: {
+                        <AnimationReveal>
+                            <ReactApexChart
+                                type={"pie"}
+                                options={
+                                    {
+                                        // colors: ['hsl(271, 100%, 34%)', 'hsl(271, 100%, 44%)', 'hsl(271, 100%, 54%)', 'hsl(271, 100%, 64%)', 'hsl(271, 100%, 74%)', 'hsl(271, 100%, 84%)'],
+                                        colors: topGenres.slice(0, 15).map((genre, idx) => {return `hsl(271, 100%, ${(4*idx) + 25}%)`}),
                                         chart: {
-                                            width: "100%"
+                                            width: "100%",
+                                            type: 'pie',
+                                        },
+                                        stroke: {
+                                            show: false
+                                        },
+                                        labels: topGenres.slice(0,15).map((genre, idx) => {return genre[0]}),
+                                        responsive: [{
+                                            breakpoint: 1050,
+                                            options: {
+                                            chart: {
+                                                width: "100%"
+                                            },
+                                            dataLabels: {
+                                                enabled: true,
+                                                formatter: function (val, opts) {
+                                                    return topGenres[opts.seriesIndex][0]
+                                                },
+                                                style: {
+                                                    fontSize: '9px',
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: 'normal'
+                                                }
+                                            },
+                                            legend: {
+                                                position: 'bottom',
+                                                show: false,
+                                            }
+                                            }
+                                        }],
+                                        legend: {
+                                            show: true,
+                                            position: "bottom",
+                                            fontSize: "18px",
+                                            fontFamily: "Lato"
                                         },
                                         dataLabels: {
                                             enabled: true,
                                             formatter: function (val, opts) {
-                                                return topGenres[opts.seriesIndex][0]
+                                                // console.log(opts)
+                                                return [topGenres[opts.seriesIndex][0], val.toFixed(2) + "%"]
                                             },
                                             style: {
-                                                fontSize: '9px',
+                                                fontSize: '14px',
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: 'normal'
                                             }
-
                                         },
-                                        legend: {
-                                            position: 'bottom',
-                                            show: false,
-                                        }
-                                        }
-                                    }],
-                                    legend: {
-                                        show: true,
-                                        position: "bottom",
-                                        fontSize: "18px",
-                                        fontFamily: "Lato"
-                                    },
-                                    dataLabels: {
-                                        enabled: true,
-                                        formatter: function (val, opts) {
-                                            // console.log(opts)
-                                            return [topGenres[opts.seriesIndex][0], val.toFixed(2) + "%"]
-                                        },
-                                        style: {
-                                            fontSize: '14px',
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: 'normal'
-                                        }
-                                    },
+                                    }
                                 }
-                            }
-                            series={topGenres.slice(0,15).map((genre, idx) => {return genre[1]})}
-
-                        />
+                                series={topGenres.slice(0,15).map((genre, idx) => {return genre[1]})}
+                            />
+                        </AnimationReveal>
                     </div>
 
                 </div>

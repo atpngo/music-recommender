@@ -6,9 +6,12 @@ export default function SquareImage({src, size, color, number, box, fontSize})
     const labelSize = Math.round(intSize/6)
     
     return (
-        <div className="">
+        <div style={{
+            paddingBottom: `${box}`,
+            paddingRight: `${box}`
+        }}>
             {/* if number is defined, also add a thing */}
-            {(number && fontSize) && <div 
+            {/* {(number && fontSize) && <div 
                 className="absolute rounded-br-xl flex items-center justify-center " 
                 style={{
                     "backgroundColor": color,
@@ -22,7 +25,7 @@ export default function SquareImage({src, size, color, number, box, fontSize})
                         fontSize: fontSize
                     }}
                 >{number}</p>
-            </div>}
+            </div>} */}
             <img src={src} className="object-cover" 
             style={{
                 boxShadow: `${box} ${box} ${color}`,
