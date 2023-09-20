@@ -1,7 +1,7 @@
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react"
 
-export default function AnimationReveal({left = false, right = false, up = false, down = false, children})
+export default function AnimationReveal({left = false, right = false, up = false, down = false, scale = false, children})
 {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true })
@@ -21,9 +21,10 @@ export default function AnimationReveal({left = false, right = false, up = false
                     hidden: { 
                         opacity: 0, 
                         y: up ? 75 : down ? -75 : 0, 
-                        x: left ? -100 : right ? 75: 0 
+                        x: left ? -100 : right ? 75: 0 ,
+                        scale: scale ? 0 : 1
                     },
-                    visible: { opacity: 1, y: 0, x: 0 }
+                    visible: { opacity: 1, y: 0, x: 0, scale: 1 }
                 }}
                 initial="hidden"
                 animate={animator}

@@ -8,6 +8,7 @@ import Error from "./pages/Error";
 import PrivateRoute from "./util/PrivateRoute";
 import { useEffect } from "react";
 import './App.css';
+import Matcher from "./pages/Matcher";
 
 function App() {
 
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route path="/main" element={<PrivateRoute/>}>
             <Route path="/main" element={<Main/>}/>
+          </Route>
+          <Route path="/matcher" element={<PrivateRoute/>}>
+            <Route path="/matcher" element={<Matcher/>}/>
           </Route>
           <Route path="*" element={<Error/>}/>
         </Routes>

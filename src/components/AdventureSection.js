@@ -9,10 +9,7 @@ import { useEffect } from "react";
 export default function AdventureSection({alignment, title, description, value, heading, mainSong, subSongs, color, data})
 {
     const {width, height} = useWindowDimensions();
-    useEffect(() => {
-        console.log('MEEEOW')
-        console.group(subSongs)
-    }, [])
+
     return (
         <div className="flex flex-col gap-4" style={{color: color}}>
             <div 

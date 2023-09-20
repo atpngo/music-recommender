@@ -384,7 +384,7 @@ function Main()
             <div className={`bg-gradient-to-b from-[#F5CFCF] to-[#F1E3BE] from-0% to-90% z-1000 flex flex-col items-center`}>
                 <div className="flex flex-col items-center gap-14 lg:min-w-[900px] lg:max-w-[1600px] min-w-[300px] md:max-w-[800px] max-w-[300px]">
                     <div className="flex items-end w-full">
-                        <AnimationReveal>
+                        <AnimationReveal scale>
                             <div className="flex flex-col">
                                 <p className="font-main font-bold text-[#B13812] lg:text-[50px] text-[30px] overflow-auto lg:leading-normal leading-[35px] overflow-hidden">introducing your dream team!</p>
                                 <p className="font-main lg:text-[25px] text-[14px]">Here are some artists that you just couldn't stop listening to</p>
@@ -393,7 +393,7 @@ function Main()
                     </div>
 
                     {/* big numero uno */}
-                    <AnimationReveal>
+                    <AnimationReveal scale>
                         <div className="flex lg:flex-row flex-col lg:gap-[100px] md:gap-[100px] items-start w-full justify-center"
                             // style={{
                             //     gap: `${width/100}px`
@@ -638,7 +638,7 @@ function Main()
                             </div>
                             {/* energy level */}
                             <div>
-                                <AnimationReveal down>
+                                <AnimationReveal down scale>
                                     <AdventureSection
                                         alignment={"center"}
                                         // title={(categorySongs["energy"]["average"] < 0.33) ? "stay mellow my fellow" : (categorySongs["energy"]["average"] < 0.66) ? "LETS GO!" : "GET HYPE!"}
