@@ -6,13 +6,16 @@ import { Howl } from 'howler';
 import axios from "axios";
 import Loading from "../components/Loading"
 import { useNavigate } from "react-router-dom";
-
+import { AnimatePresence } from "framer-motion";
 export default function Matcher()
 {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [index, setIndex] = useState(0);
     const [howlers, setHowlers] = useState([]);
+
+    const [odd, setOdd] = useState(false);
+    const [even, setEven] = useState(true)
 
     const navigate = useNavigate();
     // like  -> automatically like in spotify history
@@ -119,6 +122,16 @@ export default function Matcher()
     const goNext = () =>
     {
         setIndex(index+1);
+        if ((index+1) % 2 === 1)
+        {
+            setEven(false)
+            setOdd(true)
+        }
+        else
+        {
+            setEven(true)
+            setOdd(false)
+        }
         // stop current playing song and play the next one
         howlers[index].stop();
         howlers[index+1].play();
@@ -145,12 +158,44 @@ export default function Matcher()
     return (
         <div className="w-full h-screen bg-pink-400 flex flex-col items-center justify-center gap-20">
             {/* song data */}
-            <div className="flex flex-col lg:flex-row gap-4 lg:gap-10 items-center">
-                <img src={data[index].image} className="w-[265px] h-[265px] lg:w-[400px] lg:h-[400px]"/>
-                <div className="flex flex-col items-center text-center lg:text-left lg:items-start lg:justify-center lg: gap-4 text-white font-main text-[20px] lg:text-[40px] lg:max-w-[650px] max-w-[300px]">
-                    <p className="font-bold">{data[index].title}</p>
-                    <p className="">{data[index].artist}</p>
-                </div>
+            <div className="flex">
+                <AnimatePresence>
+                    {odd &&
+                        <motion.div
+                            style={{
+                                order: even ? 1 : 0
+                            }}
+                            className="flex flex-col lg:flex-row gap-4 lg:gap-10 items-center"
+                            exit={{opacity: 0, x: -600}}
+                            initial={{opacity: 0, x: 600, y:0, scale: 0}}
+                            animate={{opacity: 1, x: 0, scale: 1}}
+                            transition={{ duration: 1, ease: "easeIn"}}
+                        >
+                        <img src={data[index``].image} className="w-[265px] h-[265px] lg:w-[400px] lg:h-[400px]"/>
+                        <div className="flex flex-col items-center text-center lg:text-left lg:items-start lg:justify-center lg: gap-4 text-white font-main text-[20px] lg:text-[40px] lg:max-w-[650px] max-w-[300px]">
+                            <p className="font-bold">{data[index+1].title}</p>
+                            <p className="">{data[index+1].artist}</p>
+                        </div>
+                    </motion.div>}
+                    {even &&
+                    <motion.div
+                        style={{
+                            order: even ? 0: 1
+                        }}
+                        className="flex flex-col lg:flex-row gap-4 lg:gap-10 items-center"
+                        exit={{opacity: 0, x: -600}}
+                        initial={{opacity: 0, x: 600, y:0, scale: 0}}
+                        animate={{opacity: 1, x: 0, scale: 1}}
+                        transition={{ duration: 1, ease: "easeIn"}}
+                    >
+                    <img src={data[index].image} className="w-[265px] h-[265px] lg:w-[400px] lg:h-[400px]"/>
+                    <div className="flex flex-col items-center text-center lg:text-left lg:items-start lg:justify-center lg: gap-4 text-white font-main text-[20px] lg:text-[40px] lg:max-w-[650px] max-w-[300px]">
+                        <p className="font-bold">{data[index].title}</p>
+                        <p className="">{data[index].artist}</p>
+                    </div>
+                </motion.div>}
+                </AnimatePresence>
+                    
             </div>
             {/* buttons */}
             <div className="flex gap-12 lg:gap-[300px]">
