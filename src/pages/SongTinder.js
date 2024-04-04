@@ -225,7 +225,7 @@ function SongTinder()
 
     return(
         // check if playlist id is in localstorage
-        <div style={{height: '92vh', display: 'flex', alignItems:'center', justifyContent: 'center'}}>
+        <div className="bg-pink-400 h-screen" style={{display: 'flex', alignItems:'center', justifyContent: 'center'}}>
             <CartPopup open={open} onClose={handleClose} songs={songs}/>
 
             

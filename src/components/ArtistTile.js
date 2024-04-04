@@ -19,10 +19,10 @@ function ArtistTile(props)
                     </Box>
                         <Box direction="column" display="flex" alignItems="center">
                         <Avatar variant="circle" imgProps={{draggable: false}} sx={{width:92, height:92}} src={artist.image}/>
-                        </Box>
+                    </Box>
                         <Stack id="desc" direction="column" spacing={-0.5} >
                             <p id="artist">{artist.title}</p>
-                            <p id="followers">{artist.artists}</p>
+                            {/* <p id="followers">{artist.artists}</p> */}
                         </Stack>
             </Stack>
     )

@@ -18,20 +18,20 @@ function NavBar()
 
   const goToTrends = () =>
   {
-    navigate('/trends');
+    navigate('/main');
     window.location.reload();
 
   }
 
   const goToSongs = () =>
   {
-    navigate('/songs');
+    navigate('/matcher');
   }
 
   if (width < height)
   {
     return(
-      <AppBar position="static" sx={{backgroundColor: '#EF429F', height: '3.25em', display: 'flex', justifyContent: 'center'}}>
+      <AppBar position="absolute" sx={{backgroundColor: '#EF429F', height: '3.25em', display: 'flex', justifyContent: 'center'}}>
         <Container maxWidth="xl">
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
               <img draggable="false" src={logo} style={{width: '300px', height: '100%'}}></img>
@@ -43,7 +43,7 @@ function NavBar()
   }
 
   return (
-    <AppBar position="static" sx={{backgroundColor: '#EF429F', height: '3.25em', display: 'flex', justifyContent: 'center'}}>
+    <AppBar position="absolute" sx={{backgroundColor: '#EF429F', height: '3.25em', display: 'flex', justifyContent: 'center'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 

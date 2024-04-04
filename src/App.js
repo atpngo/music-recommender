@@ -3,11 +3,12 @@ import Authenticate from "./pages/Authenticate";
 import SongTinder from "./pages/SongTinder";
 import Test from "./pages/Test";
 import Trends from "./pages/Trends";
-import NavBar from "./components/NavBar";
+import Main from "./pages/Main";
 import Error from "./pages/Error";
 import PrivateRoute from "./util/PrivateRoute";
 import { useEffect } from "react";
 import './App.css';
+import Matcher from "./pages/Matcher";
 
 function App() {
 
@@ -31,9 +32,15 @@ function App() {
           <Route path="/trends" element={<PrivateRoute/>}>
             <Route path="/trends" element={<Trends/>}/>
           </Route>
+          <Route path="/main" element={<PrivateRoute/>}>
+            <Route path="/main" element={<Main/>}/>
+          </Route>
+          <Route path="/matcher" element={<PrivateRoute/>}>
+            <Route path="/matcher" element={<Matcher/>}/>
+          </Route>
           <Route path="*" element={<Error/>}/>
         </Routes>
-      </Router>
+      </Router> 
     </div>
   );
 }

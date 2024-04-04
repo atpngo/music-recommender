@@ -1,10 +1,10 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-function Chart(props)
+function Chart({color, data})
 {
     const options = {
-        colors: ['#EF429F'],
+        colors: [color],
         chart: {
             // background: 'purple',
             toolbar: { show: false },
@@ -14,26 +14,34 @@ function Chart(props)
             height: 'auto'
             // type: 'area',
         },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                 opacityFrom: 1,
+                 opacityTo: 0,
+                 shadeIntensity: 0.3
+            }
+        },
         grid: {
             show: false,
         },
-        dataLabels: { enabled: true },
+        dataLabels: { enabled: false },
         stroke: { curve: 'smooth' },
         xaxis: {
-            categories: props.labels || ['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1.0'],
+            categories: ['0 - 10%', '10 - 20%', '20 - 30%', '30 - 40%', '40 - 50%', '50 - 60%', '60 - 70%', '70 - 80%', '80 - 90%', '90 - 100%'],
             axisTicks: { show: false },
             // tickPlacement: 'between',
             // min: 0,
             // max: 1,
             axisBorder: { show: false },
             labels: {
-                show: true,
+                show: false,
                 hideOverlappingLabels: true,
             },
             width: "100%"
         },
         yaxis: { 
-            show: true,
+            show: false,
             labels: {
                 show: false
             }
@@ -43,12 +51,12 @@ function Chart(props)
     const series = [
         {
             name: 'Songs',
-            data: props.data
+            data: data
         }
     ]
 
     return (
-            <ReactApexChart options={options} series={series} type="area" height="100%" width="100%"/>
+        <ReactApexChart options={options} series={series} type="area" height="100%" width="100%"/>
     );
 }
 
